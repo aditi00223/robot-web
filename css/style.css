@@ -75,3 +75,28 @@ body {
 }
 
 .camera-box canvas { transform: scaleX(-1); }
+
+.qr-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+#qr-code {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px #5cc8ff66;
+}
+#qr-code img, #qr-code canvas, #qr-code svg {
+  display: block;
+  width: min(40vh, 360px);
+  height: min(40vh, 360px);
+}
+.qr-url {
+  font-size: clamp(16px, 2vw, 24px);
+  opacity: 0.7;
+  word-break: break-all;
+  max-width: 80vw;
+  text-align: center;
+}
