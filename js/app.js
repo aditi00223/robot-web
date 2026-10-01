@@ -3,6 +3,7 @@ const PHOTO = /\b(1|one|won|wan|ek|photo|photos|foto)\b/;
 const DIRECTIONS = /\b(2|two|to|too|tu|do|direction|directions)\b/;
 const IDLE_HINT = 'Say "Hello Robo" to wake me';
 const QR_SECONDS = 30;
+const ROUTE_SECONDS = 30;
 const MAX_TRIES = 2;
 
 const hint = document.querySelector(".hint");
@@ -49,15 +50,34 @@ function waitForDone(ms) {
 
 function matchName(text, items) {
   const t = text.toLowerCase().replace(/[^a-z0-9 ]/g, " ");
+  const heard = t.split(/\s+/).filter(Boolean);
   for (const item of items) {
-    const name = item.name.toLowerCase();
-    if (t.includes(name)) return item;
+    if (t.includes(item.name.toLowerCase())) return item;
   }
+  const norm = (w) => w.replace(/s$/, "");
+  let best = null;
+  let bestScore = 0;
+  let tie = false;
   for (const item of items) {
     const words = item.name.toLowerCase().split(/\s+/).filter((w) => w.length >= 4);
-    if (words.some((w) => t.split(/\s+/).some((h) => h.length >= 4 && (h.replace(/s$/, "") === w.replace(/s$/, "") || w.startsWith(h) || h.startsWith(w))))) return item;
+    const score = words.filter((w) =>
+      heard.some((h) => h.length >= 4 && (norm(h) === norm(w) || w.startsWith(h) || h.startsWith(w)))
+    ).length;
+    if (score > bestScore) { best = item; bestScore = score; tie = false; }
+    else if (score === bestScore && score > 0) tie = true;
   }
-  return null;
+  return tie ? null : best;
+}
+
+function renderTiles(items, onPick) {
+  dirList.innerHTML = "";
+  items.forEach((item) => {
+    const b = document.createElement("button");
+    b.className = "tile";
+    b.textContent = item.name;
+    b.addEventListener("click", () => onPick(item));
+    dirList.appendChild(b);
+  });
 }
 
 function showQR(url) {
@@ -193,26 +213,94 @@ async function startDirections() {
     return;
   }
 
-  dirItems.forEach((cat) => {
-    const b = document.createElement("button");
-    b.className = "tile";
-    b.textContent = cat.name;
-    b.addEventListener("click", () => pickCategory(cat));
-    dirList.appendChild(b);
-  });
+  renderTiles(dirItems, pickCategory);
   dirHint.textContent = "Say a category, or tap one";
-  const names = dirItems.map((c) => c.name).join(", ");
-  speakThenListen("Which category? " + names + ".");
+  speakThenListen("Which category? " + dirItems.map((c) => c.name).join(", ") + ".");
 }
 
-function pickCategory(cat) {
+async function pickCategory(cat) {
   if (state !== "dir_cat") return;
-  state = "dir_wait";
+  state = "dir_load";
+  busy = true;
+  speakId++;
+  Voice.stop();
   dirTries = 0;
   dirTitle.textContent = cat.name;
   dirList.innerHTML = "";
-  dirHint.textContent = "Places will be added in the next step";
-  speakThenListen("You chose " + cat.name + ". Places will be added in the next step.", () => backToIdle(false));
+  dirHint.textContent = "Loading places...";
+
+  try {
+    dirItems = await API.getLocations(cat.id);
+  } catch (err) {
+    console.log("Locations error:", err);
+    dirHint.textContent = "Sorry, I cannot get the list right now";
+    speakThenListen("Sorry, I cannot get the list right now. Please try again later.", () => backToIdle(false));
+    return;
+  }
+  if (dirItems.length === 0) {
+    dirHint.textContent = "No places here yet";
+    speakThenListen("Sorry, there are no places here yet.", () => backToIdle(false));
+    return;
+  }
+
+  state = "dir_place";
+  renderTiles(dirItems, pickPlace);
+  dirHint.textContent = "Say a place, or tap one";
+  speakThenListen("Which place? " + dirItems.map((p) => p.name).join(", ") + ".");
+}
+
+async function pickPlace(loc) {
+  if (state !== "dir_place") return;
+  state = "dir_route";
+  busy = true;
+  speakId++;
+  Voice.stop();
+  dirList.innerHTML = "";
+  dirTitle.textContent = loc.name;
+  dirHint.textContent = "Finding the way...";
+
+  let route;
+  try {
+    route = await API.getDirections(loc.id);
+  } catch (err) {
+    console.log("Directions error:", err);
+    dirHint.textContent = "Sorry, I cannot find the route right now";
+    speakThenListen("Sorry, I cannot find the route right now.", () => backToIdle(false));
+    return;
+  }
+
+  dirMeta.textContent = route.distance_m + " metres, about " + route.time_min + " minutes";
+  dirSteps.innerHTML = "";
+  route.steps.forEach((s) => {
+    const li = document.createElement("li");
+    li.textContent = s;
+    dirSteps.appendChild(li);
+  });
+  dirResult.hidden = false;
+  dirHint.textContent = "Tap Home when you are done";
+
+  const spoken = "Directions to " + loc.name + ". " +
+    route.steps.map((s) => s.replace(/\.?\s*$/, ".")).join(" ");
+  speakAsync(spoken);
+  await waitForDone(ROUTE_SECONDS * 1000);
+  backToIdle();
+}
+
+function handleListChoice(text, what, onPick) {
+  dirHint.textContent = 'Heard: "' + text + '"';
+  const found = matchName(text, dirItems);
+  if (found) {
+    onPick(found);
+    return;
+  }
+  dirTries++;
+  if (dirTries >= MAX_TRIES) {
+    dirHint.textContent = "Sorry, going back";
+    speakThenListen("Sorry, I could not understand. Please try again later.", () => backToIdle(false));
+  } else {
+    dirHint.textContent = "Say a " + what + ", or tap one";
+    speakThenListen("Sorry, I did not catch that. Please say " + dirItems.map((i) => i.name).join(", ") + ".");
+  }
 }
 
 function wake() {
@@ -241,21 +329,9 @@ function onHeard(text) {
     if (wantsPhoto) choose("photo");
     else if (wantsDirections) choose("directions");
   } else if (state === "dir_cat") {
-    dirHint.textContent = 'Heard: "' + text + '"';
-    const found = matchName(text, dirItems);
-    if (found) {
-      pickCategory(found);
-    } else {
-      dirTries++;
-      if (dirTries >= MAX_TRIES) {
-        dirHint.textContent = "Sorry, going back";
-        speakThenListen("Sorry, I could not understand. Please try again later.", () => backToIdle(false));
-      } else {
-        const names = dirItems.map((c) => c.name).join(", ");
-        dirHint.textContent = "Say a category, or tap one";
-        speakThenListen("Sorry, I did not catch that. Please say " + names + ".");
-      }
-    }
+    handleListChoice(text, "category", pickCategory);
+  } else if (state === "dir_place") {
+    handleListChoice(text, "place", pickPlace);
   }
 }
 
@@ -265,7 +341,10 @@ document.getElementById("btn-directions").addEventListener("click", () => choose
 document.getElementById("btn-done").addEventListener("click", () => {
   if (doneResolve) doneResolve();
 });
-document.getElementById("btn-dir-home").addEventListener("click", () => backToIdle());
+document.getElementById("btn-dir-home").addEventListener("click", () => {
+  if (doneResolve) doneResolve();
+  else backToIdle();
+});
 
 document.addEventListener("click", () => {
   if (started) return;
@@ -275,4 +354,3 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
-
