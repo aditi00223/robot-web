@@ -1,0 +1,25 @@
+{
+  "start_point": {
+    "name": "Main Gate",
+    "latitude": 30.0,
+    "longitude": 76.0
+  },
+  "blocks": [
+    {
+      "name": "CSE Block",
+      "category": "Academic Blocks",
+      "latitude": 30.001,
+      "longitude": 76.001,
+      "description": "Computer Science labs and classrooms. 4 floors.",
+      "photo": "cse_block.jpg"
+    },
+    {
+      "name": "Boys Hostel 1",
+      "category": "Hostels",
+      "latitude": 30.002,
+      "longitude": 76.002,
+      "description": "Boys hostel with mess and common room.",
+      "photo": "boys_hostel_1.jpg"
+    }
+  ]
+}
