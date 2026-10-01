@@ -74,8 +74,8 @@ async function startPhoto() {
     return;
   }
 
-  await speakAsync("Please look at the camera.");
-  await Camera.countdown(countdownEl, 3);
+  photoHint.textContent = "Please stand in front of me and pose"; await speakAsync("Please stand in front of me and pose. I will take your photo in a moment."); await wait(2000); photoHint.textContent = "Get ready!"; await speakAsync("Get ready.");
+  photoHint.textContent = "Smile!"; await Camera.countdown(countdownEl, 3, (n) => Speak.say(String(n)));
 
   const blob = await Camera.capture(cam, snap);
   console.log("Photo captured, size:", blob.size);
@@ -135,3 +135,4 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
+
