@@ -1,0 +1,32 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: #0b1220;
+  color: #e6edf7;
+  font-family: system-ui, Arial, sans-serif;
+}
+#app { height: 100%; }
+.screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+.eyes { display: flex; gap: 8vw; }
+.eye {
+  width: 14vw;
+  height: 14vw;
+  max-width: 180px;
+  max-height: 180px;
+  background: #5cc8ff;
+  border-radius: 50%;
+  box-shadow: 0 0 40px #5cc8ff88;
+  animation: blink 5s infinite;
+}
+.hint { font-size: clamp(20px, 3vw, 36px); opacity: 0.85; }
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
