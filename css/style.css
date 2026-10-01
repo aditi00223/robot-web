@@ -30,3 +30,18 @@ body {
   0%, 92%, 100% { transform: scaleY(1); }
   95% { transform: scaleY(0.08); }
 }
+
+.menu { display: flex; gap: 32px; }
+.menu[hidden] { display: none; }
+.btn {
+  font-size: clamp(22px, 3vw, 40px);
+  padding: 24px 48px;
+  min-width: 260px;
+  color: #0b1220;
+  background: #5cc8ff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 0 24px #5cc8ff66;
+}
+.btn:active { transform: scale(0.96); }
