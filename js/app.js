@@ -3,6 +3,7 @@ const PHOTO = /\b(1|one|won|wan|ek|photo|photos|foto)\b/;
 const DIRECTIONS = /\b(2|two|to|too|tu|do|direction|directions)\b/;
 const IDLE_HINT = 'Say "Hello Robo" to wake me';
 const QR_SECONDS = 30;
+const MAX_TRIES = 2;
 
 const hint = document.querySelector(".hint");
 const menu = document.getElementById("menu");
@@ -17,11 +18,21 @@ const qrBox = document.getElementById("qr-box");
 const qrCode = document.getElementById("qr-code");
 const qrUrl = document.getElementById("qr-url");
 
+const dirScreen = document.getElementById("screen-directions");
+const dirTitle = document.getElementById("dir-title");
+const dirList = document.getElementById("dir-list");
+const dirResult = document.getElementById("dir-result");
+const dirMeta = document.getElementById("dir-meta");
+const dirSteps = document.getElementById("dir-steps");
+const dirHint = document.getElementById("dir-hint");
+
 let state = "idle";
 let busy = false;
 let started = false;
 let speakId = 0;
 let doneResolve = null;
+let dirItems = [];
+let dirTries = 0;
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const speakAsync = (text) => new Promise((resolve) => {
@@ -34,6 +45,19 @@ function waitForDone(ms) {
     doneResolve = resolve;
     setTimeout(resolve, ms);
   });
+}
+
+function matchName(text, items) {
+  const t = text.toLowerCase().replace(/[^a-z0-9 ]/g, " ");
+  for (const item of items) {
+    const name = item.name.toLowerCase();
+    if (t.includes(name)) return item;
+  }
+  for (const item of items) {
+    const words = item.name.toLowerCase().split(/\s+/).filter((w) => w.length >= 4);
+    if (words.some((w) => t.split(/\s+/).some((h) => h.length >= 4 && (h.replace(/s$/, "") === w.replace(/s$/, "") || w.startsWith(h) || h.startsWith(w))))) return item;
+  }
+  return null;
 }
 
 function showQR(url) {
@@ -62,11 +86,16 @@ function speakThenListen(text, after) {
   });
 }
 
-function backToIdle() {
+function backToIdle(listen = true) {
   Speak.stop();
   doneResolve = null;
   Camera.stop(cam);
   photoScreen.hidden = true;
+  dirScreen.hidden = true;
+  dirList.innerHTML = "";
+  dirResult.hidden = true;
+  dirItems = [];
+  dirTries = 0;
   idleScreen.hidden = false;
   cameraBox.hidden = false;
   qrBox.hidden = true;
@@ -78,7 +107,7 @@ function backToIdle() {
   hint.textContent = IDLE_HINT;
   state = "idle";
   busy = false;
-  Voice.start(onHeard);
+  if (listen) Voice.start(onHeard);
 }
 
 async function startPhoto() {
@@ -141,6 +170,51 @@ async function startPhoto() {
   backToIdle();
 }
 
+async function startDirections() {
+  state = "dir_cat";
+  busy = true;
+  speakId++;
+  Voice.stop();
+  menu.hidden = true;
+  idleScreen.hidden = true;
+  dirScreen.hidden = false;
+  dirResult.hidden = true;
+  dirList.innerHTML = "";
+  dirTitle.textContent = "Pick a category";
+  dirHint.textContent = "Loading...";
+  dirTries = 0;
+
+  try {
+    dirItems = await API.getCategories();
+  } catch (err) {
+    console.log("Categories error:", err);
+    dirHint.textContent = "Sorry, I cannot get the list right now";
+    speakThenListen("Sorry, I cannot get the list right now. Please try again later.", () => backToIdle(false));
+    return;
+  }
+
+  dirItems.forEach((cat) => {
+    const b = document.createElement("button");
+    b.className = "tile";
+    b.textContent = cat.name;
+    b.addEventListener("click", () => pickCategory(cat));
+    dirList.appendChild(b);
+  });
+  dirHint.textContent = "Say a category, or tap one";
+  const names = dirItems.map((c) => c.name).join(", ");
+  speakThenListen("Which category? " + names + ".");
+}
+
+function pickCategory(cat) {
+  if (state !== "dir_cat") return;
+  state = "dir_wait";
+  dirTries = 0;
+  dirTitle.textContent = cat.name;
+  dirList.innerHTML = "";
+  dirHint.textContent = "Places will be added in the next step";
+  speakThenListen("You chose " + cat.name + ". Places will be added in the next step.", () => backToIdle(false));
+}
+
 function wake() {
   if (state !== "idle") return;
   state = "menu";
@@ -151,16 +225,8 @@ function wake() {
 
 function choose(what) {
   if (state !== "menu") return;
-  if (what === "photo") {
-    startPhoto();
-    return;
-  }
-  state = "idle";
-  menu.hidden = true;
-  hint.textContent = "Directions selected";
-  speakThenListen("Okay, directions. This is coming soon.", () => {
-    hint.textContent = IDLE_HINT;
-  });
+  if (what === "photo") startPhoto();
+  else startDirections();
 }
 
 function onHeard(text) {
@@ -174,6 +240,22 @@ function onHeard(text) {
     if (wantsPhoto && wantsDirections) return;
     if (wantsPhoto) choose("photo");
     else if (wantsDirections) choose("directions");
+  } else if (state === "dir_cat") {
+    dirHint.textContent = 'Heard: "' + text + '"';
+    const found = matchName(text, dirItems);
+    if (found) {
+      pickCategory(found);
+    } else {
+      dirTries++;
+      if (dirTries >= MAX_TRIES) {
+        dirHint.textContent = "Sorry, going back";
+        speakThenListen("Sorry, I could not understand. Please try again later.", () => backToIdle(false));
+      } else {
+        const names = dirItems.map((c) => c.name).join(", ");
+        dirHint.textContent = "Say a category, or tap one";
+        speakThenListen("Sorry, I did not catch that. Please say " + names + ".");
+      }
+    }
   }
 }
 
@@ -183,6 +265,7 @@ document.getElementById("btn-directions").addEventListener("click", () => choose
 document.getElementById("btn-done").addEventListener("click", () => {
   if (doneResolve) doneResolve();
 });
+document.getElementById("btn-dir-home").addEventListener("click", () => backToIdle());
 
 document.addEventListener("click", () => {
   if (started) return;
@@ -192,3 +275,4 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
+
