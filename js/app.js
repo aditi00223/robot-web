@@ -5,10 +5,23 @@ const IDLE_HINT = 'Say "Hello Robo" to wake me';
 
 const hint = document.querySelector(".hint");
 const menu = document.getElementById("menu");
+const idleScreen = document.getElementById("screen-idle");
+const photoScreen = document.getElementById("screen-photo");
+const photoHint = document.getElementById("photo-hint");
+const cam = document.getElementById("cam");
+const snap = document.getElementById("snap");
+const countdownEl = document.getElementById("countdown");
+
 let state = "idle";
 let busy = false;
 let started = false;
 let speakId = 0;
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const speakAsync = (text) => new Promise((resolve) => {
+  Speak.say(text, resolve);
+  setTimeout(resolve, 8000);
+});
 
 function speakThenListen(text, after) {
   busy = true;
@@ -24,6 +37,56 @@ function speakThenListen(text, after) {
   });
 }
 
+function backToIdle() {
+  Camera.stop(cam);
+  photoScreen.hidden = true;
+  idleScreen.hidden = false;
+  cam.hidden = false;
+  snap.hidden = true;
+  countdownEl.hidden = true;
+  menu.hidden = true;
+  hint.textContent = IDLE_HINT;
+  state = "idle";
+  busy = false;
+  Voice.start(onHeard);
+}
+
+async function startPhoto() {
+  state = "photo";
+  busy = true;
+  speakId++;
+  Voice.stop();
+  menu.hidden = true;
+  idleScreen.hidden = true;
+  photoScreen.hidden = false;
+  cam.hidden = false;
+  snap.hidden = true;
+  photoHint.textContent = "Please look at the camera";
+
+  try {
+    await Camera.start(cam);
+  } catch (err) {
+    console.log("Camera error:", err);
+    photoHint.textContent = "Camera not available";
+    await speakAsync("Sorry, I cannot use the camera right now.");
+    await wait(1500);
+    backToIdle();
+    return;
+  }
+
+  await speakAsync("Please look at the camera.");
+  await Camera.countdown(countdownEl, 3);
+
+  const blob = await Camera.capture(cam, snap);
+  console.log("Photo captured, size:", blob.size);
+  cam.hidden = true;
+  snap.hidden = false;
+  photoHint.textContent = "Nice photo!";
+  await speakAsync("Photo taken.");
+  await wait(3000);
+  backToIdle();
+}
+
 function wake() {
   if (state !== "idle") return;
   state = "menu";
@@ -34,14 +97,16 @@ function wake() {
 
 function choose(what) {
   if (state !== "menu") return;
+  if (what === "photo") {
+    startPhoto();
+    return;
+  }
   state = "idle";
   menu.hidden = true;
-  const photo = what === "photo";
-  hint.textContent = photo ? "Photo selected" : "Directions selected";
-  speakThenListen(
-    photo ? "Okay, photo. This is coming soon." : "Okay, directions. This is coming soon.",
-    () => { hint.textContent = IDLE_HINT; }
-  );
+  hint.textContent = "Directions selected";
+  speakThenListen("Okay, directions. This is coming soon.", () => {
+    hint.textContent = IDLE_HINT;
+  });
 }
 
 function onHeard(text) {
