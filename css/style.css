@@ -124,3 +124,17 @@ body {
 .dir-result { max-width: 90vw; text-align: left; }
 .dir-meta { font-size: clamp(18px, 2.4vw, 28px); opacity: 0.8; margin-bottom: 16px; text-align: center; }
 .dir-steps { font-size: clamp(22px, 3vw, 36px); line-height: 1.5; padding-left: 1.2em; }
+
+.dir-photo {
+  width: min(60vw, 720px);
+  max-height: 45vh;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 0 40px #5cc8ff66;
+}
+.dir-desc {
+  font-size: clamp(18px, 2.4vw, 28px);
+  opacity: 0.85;
+  text-align: center;
+  max-width: 80vw;
+}

@@ -26,6 +26,8 @@ const dirResult = document.getElementById("dir-result");
 const dirMeta = document.getElementById("dir-meta");
 const dirSteps = document.getElementById("dir-steps");
 const dirHint = document.getElementById("dir-hint");
+const dirPhoto = document.getElementById("dir-photo");
+const dirDesc = document.getElementById("dir-desc");
 
 let state = "idle";
 let busy = false;
@@ -111,6 +113,8 @@ function backToIdle(listen = true) {
   doneResolve = null;
   Camera.stop(cam);
   photoScreen.hidden = true;
+  dirPhoto.hidden = true;
+  dirDesc.hidden = true;
   dirScreen.hidden = true;
   dirList.innerHTML = "";
   dirResult.hidden = true;
@@ -249,6 +253,31 @@ async function pickCategory(cat) {
   speakThenListen("Which place? " + dirItems.map((p) => p.name).join(", ") + ".");
 }
 
+async function showBuilding(loc) {
+  let info = null;
+  try {
+    info = await API.getLocation(loc.id);
+  } catch (err) {
+    console.log("Location error:", err);
+  }
+  let src = (info && info.photo_url) ? info.photo_url : "assets/placeholder.svg";
+  if (src.startsWith("/")) src = API.BASE_URL + src;
+  dirPhoto.onerror = () => {
+    dirPhoto.onerror = null;
+    dirPhoto.src = "assets/placeholder.svg";
+  };
+  dirPhoto.src = src;
+  dirPhoto.hidden = false;
+  const desc = (info && info.description) ? info.description : "";
+  dirDesc.textContent = desc;
+  dirDesc.hidden = !desc;
+  dirHint.textContent = "Showing you the way to " + loc.name;
+  await speakAsync("Showing you the way to " + loc.name + ".");
+  await wait(3000);
+  dirPhoto.hidden = true;
+  dirDesc.hidden = true;
+}
+
 async function pickPlace(loc) {
   if (state !== "dir_place") return;
   state = "dir_route";
@@ -258,6 +287,8 @@ async function pickPlace(loc) {
   dirList.innerHTML = "";
   dirTitle.textContent = loc.name;
   dirHint.textContent = "Finding the way...";
+  await showBuilding(loc);
+  if (state !== "dir_route") return;
 
   let route;
   try {
@@ -354,3 +385,4 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
+
