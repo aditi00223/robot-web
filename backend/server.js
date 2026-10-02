@@ -67,5 +67,47 @@ app.get('/api/locations/:id', async (req, res) => {
   }
 }); 
 
+
+app.get('/api/directions', async (req, res) => {
+  try {
+    const from = req.query.from;
+    const to = req.query.to;
+    if (!from || !to) {
+      return res.status(400).json({ error: 'from and to are required' });
+    }
+
+    const [starts] = await pool.query(
+      'SELECT id FROM start_points WHERE slug = ? OR name = ?',
+      [from, from]
+    );
+    if (starts.length === 0) {
+      return res.status(404).json({ error: 'Start point not found' });
+    }
+
+    const [rows] = await pool.query(
+      `SELECT l.name AS \`to\`, r.distance_m, r.time_min, r.steps, r.path
+       FROM routes r JOIN locations l ON l.id = r.location_id
+       WHERE r.start_id = ? AND r.location_id = ?`,
+      [starts[0].id, to]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'No route found' });
+    }
+
+    const row = rows[0];
+    const parse = (v) => (typeof v === 'string' ? JSON.parse(v) : v || []);
+    res.json({
+      to: row.to,
+      distance_m: row.distance_m,
+      time_min: row.time_min,
+      steps: parse(row.steps),
+      path: parse(row.path),
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
