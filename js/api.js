@@ -3,6 +3,15 @@ const API = {
   BASE_URL: "http://localhost:4000",
   START: "main_gate",
 
+  _paths: {
+    10: [[30.0, 76.0], [30.0, 76.0007], [30.001, 76.0007], [30.001, 76.001]],
+    11: [[30.0, 76.0], [30.0004, 76.0], [30.0004, 76.0006]],
+    20: [[30.0, 76.0], [30.0, 76.001], [30.002, 76.001], [30.002, 76.002]],
+    21: [[30.0, 76.0], [30.0006, 76.0], [30.0006, 76.0012]],
+    30: [[30.0, 76.0], [30.0003, 76.0], [30.0003, 76.0008]],
+    31: [[30.0, 76.0], [30.0002, 76.0], [30.0002, 76.0003]]
+  },
+
   _cats: [
     { id: 1, name: "Academic Blocks" },
     { id: 2, name: "Hostels" },
@@ -55,7 +64,7 @@ const API = {
   async getDirections(locationId) {
     if (this.MOCK) {
       const l = this._locs.find((x) => x.id === locationId);
-      return { to: l.name, distance_m: l.distance_m, time_min: l.time_min, steps: l.steps, path: [] };
+      return { to: l.name, distance_m: l.distance_m, time_min: l.time_min, steps: l.steps, path: this._paths[locationId] || [] };
     }
     return await this._get("/api/directions?from=" + this.START + "&to=" + locationId);
   },
@@ -75,3 +84,4 @@ const API = {
     return await res.json();
   }
 };
+

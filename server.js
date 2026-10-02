@@ -16,7 +16,8 @@ http.createServer((req, res) => {
   if (!file.startsWith(__dirname)) { res.writeHead(403); return res.end("Forbidden"); }
   fs.readFile(file, (err, data) => {
     if (err) { res.writeHead(404); return res.end("Not found"); }
-    res.writeHead(200, { "Content-Type": types[path.extname(file)] || "application/octet-stream" });
+    res.writeHead(200, { "Content-Type": types[path.extname(file)] || "application/octet-stream", "Cache-Control": "no-store" });
     res.end(data);
   });
 }).listen(3000, () => console.log("Open http://localhost:3000"));
+

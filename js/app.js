@@ -28,6 +28,7 @@ const dirSteps = document.getElementById("dir-steps");
 const dirHint = document.getElementById("dir-hint");
 const dirPhoto = document.getElementById("dir-photo");
 const dirDesc = document.getElementById("dir-desc");
+const dirMap = document.getElementById("dir-map");
 
 let state = "idle";
 let busy = false;
@@ -254,6 +255,50 @@ async function pickCategory(cat) {
   speakThenListen("Which place? " + dirItems.map((p) => p.name).join(", ") + ".");
 }
 
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function drawMap(path, startName, placeName) {
+  if (!path || path.length < 2) {
+    dirMap.setAttribute("hidden", "");
+    return;
+  }
+  const k = Math.cos((path[0][0] * Math.PI) / 180);
+  const pts = path.map((p) => [p[1] * k, -p[0]]);
+  const xs = pts.map((p) => p[0]);
+  const ys = pts.map((p) => p[1]);
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const W = 600, H = 300, pad = 50;
+  const spanX = Math.max(maxX - minX, 1e-9);
+  const spanY = Math.max(maxY - minY, 1e-9);
+  const scale = Math.min((W - 2 * pad) / spanX, (H - 2 * pad) / spanY);
+  const offX = (W - spanX * scale) / 2;
+  const offY = (H - spanY * scale) / 2;
+  const P = pts.map((p) => [offX + (p[0] - minX) * scale, offY + (p[1] - minY) * scale]);
+  const d = P.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+  const s = P[0];
+  const e = P[P.length - 1];
+  const endAbove = e[1] <= s[1];
+
+  const lab = (p, text, above) => {
+    const x = Math.min(Math.max(p[0], 80), 520);
+    const y = above ? p[1] - 20 : p[1] + 36;
+    return '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) +
+      '" fill="#e6edf7" font-size="22" text-anchor="middle" font-family="system-ui, Arial">' +
+      esc(text) + "</text>";
+  };
+
+  dirMap.innerHTML =
+    '<path d="' + d + '" fill="none" stroke="#5cc8ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<circle cx="' + s[0].toFixed(1) + '" cy="' + s[1].toFixed(1) + '" r="11" fill="#4ade80"/>' +
+    '<circle cx="' + e[0].toFixed(1) + '" cy="' + e[1].toFixed(1) + '" r="13" fill="#f87171"/>' +
+    lab(s, startName, !endAbove) +
+    lab(e, placeName, endAbove);
+  dirMap.removeAttribute("hidden");
+}
+
 async function showBuilding(loc) {
   let info = null;
   try {
@@ -302,6 +347,7 @@ async function pickPlace(loc) {
   }
 
   dirMeta.textContent = route.distance_m + " metres, about " + route.time_min + " minutes";
+  drawMap(route.path, "Start", loc.name);
   dirSteps.innerHTML = "";
   route.steps.forEach((s) => {
     const li = document.createElement("li");
@@ -398,6 +444,8 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
+
+
 
 
 
