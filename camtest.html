@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Camera test</title>
+<style>
+body { font-family: system-ui, Arial; background: #0b1220; color: #e6edf7; padding: 16px; }
+button { font-size: 18px; padding: 12px 18px; margin: 6px; border-radius: 12px; border: 0; background: #5cc8ff; }
+video { width: 100%; max-width: 640px; background: #000; border-radius: 12px; display: block; margin-top: 12px; }
+pre { white-space: pre-wrap; opacity: 0.85; }
+</style>
+</head>
+<body>
+<h2>Camera test</h2>
+<p id="secure"></p>
+<button id="go">Allow camera and list cameras</button>
+<div id="list"></div>
+<video id="v" autoplay playsinline muted></video>
+<pre id="log"></pre>
+<script>
+const log = (m) => { document.getElementById("log").textContent += m + "\n"; };
+document.getElementById("secure").textContent =
+  window.isSecureContext ? "Secure page: camera allowed" : "NOT a secure page: camera will be blocked";
+
+document.getElementById("go").onclick = async () => {
+  try {
+    const tmp = await navigator.mediaDevices.getUserMedia({ video: true });
+    tmp.getTracks().forEach((t) => t.stop());
+  } catch (e) {
+    log("Permission error: " + e.name + " " + e.message);
+    return;
+  }
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  const cams = devices.filter((d) => d.kind === "videoinput");
+  log("Cameras found: " + cams.length);
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  cams.forEach((c, i) => {
+    log(i + ": " + (c.label || "(no name)"));
+    const b = document.createElement("button");
+    b.textContent = "Show camera " + i + ": " + (c.label || "no name");
+    b.onclick = async () => {
+      try {
+        const s = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: c.deviceId } } });
+        document.getElementById("v").srcObject = s;
+        log("Started camera " + i);
+      } catch (e) {
+        log("Start error: " + e.name + " " + e.message);
+      }
+    };
+    list.appendChild(b);
+  });
+};
+</script>
+</body>
+</html>
