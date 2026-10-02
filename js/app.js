@@ -36,6 +36,7 @@ let speakId = 0;
 let doneResolve = null;
 let dirItems = [];
 let dirTries = 0;
+let lastActivity = Date.now();
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const speakAsync = (text) => new Promise((resolve) => {
@@ -349,6 +350,7 @@ function choose(what) {
 }
 
 function onHeard(text) {
+  if (!text) return;
   if (busy) return;
   hint.textContent = 'Heard: "' + text + '"';
   if (state === "idle") {
@@ -365,6 +367,17 @@ function onHeard(text) {
     handleListChoice(text, "place", pickPlace);
   }
 }
+
+const INACTIVE_MS = 20000;
+document.addEventListener("click", () => { lastActivity = Date.now(); });
+setInterval(() => {
+  if (busy) { lastActivity = Date.now(); return; }
+  if (!["menu", "dir_cat", "dir_place"].includes(state)) return;
+  if (Date.now() - lastActivity > INACTIVE_MS) {
+    console.log("Inactive, going back to idle");
+    speakThenListen("Okay, I will be here if you need me.", () => backToIdle(false));
+  }
+}, 1000);
 
 document.getElementById("eyes").addEventListener("click", wake);
 document.getElementById("btn-photo").addEventListener("click", () => choose("photo"));
@@ -385,4 +398,6 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
+
+
 
