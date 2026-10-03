@@ -322,5 +322,75 @@ app.get('/locations/:id', async (req, res) => {
 });
 
 
+
+const QRCode = require('qrcode');
+
+app.get('/slip/:locationId', async (req, res) => {
+  try {
+    const from = req.query.from || 'main_gate';
+    let width = parseInt(req.query.width, 10);
+    if (!(width >= 40 && width <= 110)) width = 58;
+
+    const [starts] = await pool.query(
+      'SELECT id, name FROM start_points WHERE slug = ? OR name = ?',
+      [from, from]
+    );
+    const [locs] = await pool.query('SELECT id, name FROM locations WHERE id = ?', [
+      req.params.locationId,
+    ]);
+    if (starts.length === 0 || locs.length === 0) {
+      return res.status(404).send('Place not found');
+    }
+
+    const [routes] = await pool.query(
+      'SELECT distance_m, time_min, steps FROM routes WHERE start_id = ? AND location_id = ?',
+      [starts[0].id, locs[0].id]
+    );
+    const route = routes[0];
+    const steps = route
+      ? typeof route.steps === 'string' ? JSON.parse(route.steps) : route.steps || []
+      : [];
+
+    const base = process.env.PUBLIC_URL || req.protocol + '://' + req.get('host');
+    const qr = await QRCode.toDataURL(base + '/locations/' + locs[0].id, { margin: 1, width: 300 });
+
+    const stepsHtml = steps.length
+      ? '<ol>' + steps.map((s) => `<li>${esc(s)}</li>`).join('') + '</ol>'
+      : '<p>Ask the help desk for directions.</p>';
+    const info = route ? `<p class="meta">${route.distance_m} m, about ${route.time_min} min walk</p>` : '';
+
+    res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Directions to ${esc(locs[0].name)}</title>
+<style>
+  @page { size: ${width}mm auto; margin: 2mm; }
+  body { font-family: Arial, sans-serif; width: ${width - 4}mm; margin: 0 auto; color: #000; }
+  h1 { font-size: 16px; text-align: center; margin: 6px 0 2px; }
+  .from, .meta { font-size: 12px; text-align: center; margin: 2px 0; }
+  ol { font-size: 13px; padding-left: 18px; margin: 8px 0; }
+  li { margin-bottom: 4px; }
+  img { display: block; width: 70%; margin: 8px auto 2px; }
+  .scan { font-size: 11px; text-align: center; margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<h1>${esc(locs[0].name)}</h1>
+<p class="from">From: ${esc(starts[0].name)}</p>
+${info}
+${stepsHtml}
+<img src="${qr}" alt="QR code">
+<p class="scan">Scan for photos and map</p>
+</body>
+</html>`);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
