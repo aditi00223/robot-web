@@ -275,5 +275,52 @@ app.get('/locations', async (req, res) => {
   }
 });
 
+
+app.get('/locations/:id', async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT l.id, l.name, l.description, l.latitude, l.longitude, l.photo_url, c.name AS category
+       FROM locations l JOIN categories c ON c.id = l.category_id
+       WHERE l.id = ?`,
+      [req.params.id]
+    );
+    if (rows.length === 0) {
+      return res.status(404).send(siteShell('Not found',
+        '<p>Sorry, we could not find that place. <a href="/locations">Back to all locations</a></p>'));
+    }
+    const loc = rows[0];
+    const lat = loc.latitude === null ? null : Number(loc.latitude);
+    const lng = loc.longitude === null ? null : Number(loc.longitude);
+    const hasMap = lat !== null && lng !== null;
+
+    let body = `<h1>${esc(loc.name)}</h1><p><small>${esc(loc.category)}</small></p>`;
+    if (loc.photo_url) body += `<img class="hero" src="${esc(loc.photo_url)}" alt="${esc(loc.name)}">`;
+    if (loc.description) body += `<p>${esc(loc.description)}</p>`;
+    if (hasMap) {
+      body += `<div id="map"></div>
+      <script>
+        var pos = ${JSON.stringify([lat, lng])};
+        var map = L.map('map').setView(pos, 17);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker(pos).addTo(map).bindPopup(${JSON.stringify(loc.name)}).openPopup();
+      </script>`;
+    }
+    body += '<p><a href="/locations">&larr; All locations</a></p>';
+
+    const head = hasMap
+      ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>`
+      : '';
+    res.send(siteShell(loc.name, body, head));
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(siteShell('Error', '<p>Something went wrong. Please try again.</p>'));
+  }
+});
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
