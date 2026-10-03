@@ -109,5 +109,54 @@ app.get('/api/directions', async (req, res) => {
   }
 });
 
+
+const multer = require('multer');
+const crypto = require('crypto');
+const fs = require('fs');
+
+app.set('trust proxy', 1);
+
+const UPLOAD_DIR = path.join(__dirname, 'uploads');
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+app.use('/uploads', express.static(UPLOAD_DIR));
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (['image/jpeg', 'image/png'].includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Only JPEG or PNG allowed'));
+  },
+});
+
+app.post('/api/photos', (req, res) => {
+  upload.single('photo')(req, res, async (err) => {
+    if (err) {
+      const msg = err.code === 'LIMIT_FILE_SIZE' ? 'File too large (max 5 MB)' : err.message;
+      return res.status(400).json({ error: msg });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: 'No photo uploaded' });
+    }
+    try {
+      const id = crypto.randomBytes(6).toString('hex');
+      const ext = req.file.mimetype === 'image/png' ? 'png' : 'jpg';
+      const filename = id + '.' + ext;
+      fs.writeFileSync(path.join(UPLOAD_DIR, filename), req.file.buffer);
+
+      await pool.query('INSERT INTO photos (id, image_url) VALUES (?, ?)', [
+        id,
+        '/uploads/' + filename,
+      ]);
+
+      const base = process.env.PUBLIC_URL || req.protocol + '://' + req.get('host');
+      res.json({ id, url: base + '/photo/' + id });
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).json({ error: 'Server error' });
+    }
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
