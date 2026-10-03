@@ -112,6 +112,22 @@ app.get('/api/directions', async (req, res) => {
 
 const multer = require('multer');
 const crypto = require('crypto');
+
+const cloudinary = require('cloudinary').v2;
+const useCloud = !!(
+  process.env.CLOUDINARY_CLOUD_NAME &&
+  process.env.CLOUDINARY_API_KEY &&
+  process.env.CLOUDINARY_API_SECRET
+);
+if (useCloud) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+}
+console.log('Selfie storage:', useCloud ? 'Cloudinary' : 'local disk');
+
 const fs = require('fs');
 
 app.set('trust proxy', 1);
@@ -141,13 +157,29 @@ app.post('/api/photos', (req, res) => {
     try {
       const id = crypto.randomBytes(6).toString('hex');
       const ext = req.file.mimetype === 'image/png' ? 'png' : 'jpg';
-      const filename = id + '.' + ext;
-      fs.writeFileSync(path.join(UPLOAD_DIR, filename), req.file.buffer);
+            let imageUrl = null;
+      if (useCloud) {
+        try {
+          const result = await new Promise((resolve, reject) => {
+            cloudinary.uploader
+              .upload_stream(
+                { folder: 'robot-selfies', public_id: id, resource_type: 'image' },
+                (e, r) => (e ? reject(e) : resolve(r))
+              )
+              .end(req.file.buffer);
+          });
+          imageUrl = result.secure_url;
+        } catch (e) {
+          console.error('Cloudinary upload failed, saving locally:', e.message);
+        }
+      }
+      if (!imageUrl) {
+        const filename = id + '.' + ext;
+        fs.writeFileSync(path.join(UPLOAD_DIR, filename), req.file.buffer);
+        imageUrl = '/uploads/' + filename;
+      }
 
-      await pool.query('INSERT INTO photos (id, image_url) VALUES (?, ?)', [
-        id,
-        '/uploads/' + filename,
-      ]);
+      await pool.query('INSERT INTO photos (id, image_url) VALUES (?, ?)', [id, imageUrl]);
 
       const base = process.env.PUBLIC_URL || req.protocol + '://' + req.get('host');
       res.json({ id, url: base + '/photo/' + id });
@@ -209,6 +241,9 @@ app.get('/photo/:id/download', async (req, res) => {
   try {
     const photo = await findPhoto(req.params.id);
     if (!photo) return res.status(404).send('Photo not found');
+       if (photo.image_url.startsWith('http')) {
+      return res.redirect(photo.image_url.replace('/upload/', '/upload/fl_attachment/'));
+    }
     const file = path.join(__dirname, photo.image_url);
     res.download(file, 'robot-photo' + path.extname(file));
   } catch (err) {
