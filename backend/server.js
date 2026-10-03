@@ -218,5 +218,62 @@ app.get('/photo/:id/download', async (req, res) => {
 });
 
 
+const esc = (s) =>
+  String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const siteShell = (title, body, head = '') => `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #f4f6fa; color: #222; }
+  header { background: #1a73e8; color: #fff; padding: 16px; text-align: center; font-size: 20px; }
+  header a { color: #fff; text-decoration: none; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 16px 14px 40px; }
+  h2 { font-size: 18px; margin: 24px 0 10px; color: #1a73e8; }
+  .card { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 10px;
+          padding: 10px; margin-bottom: 10px; text-decoration: none; color: #222;
+          box-shadow: 0 1px 6px rgba(0,0,0,.12); }
+  .card img { width: 96px; height: 64px; object-fit: cover; border-radius: 6px; background: #ddd; flex-shrink: 0; }
+  .card span { font-size: 17px; }
+  .hero { width: 100%; height: auto; border-radius: 10px; margin-top: 10px; }
+  #map { height: 300px; border-radius: 10px; margin-top: 16px; }
+  p { font-size: 16px; line-height: 1.5; }
+</style>
+${head}
+</head>
+<body>
+<header><a href="/locations">Campus Locations</a></header>
+<div class="wrap">${body}</div>
+</body>
+</html>`;
+
+app.get('/locations', async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT l.id, l.name, l.photo_url, c.name AS category
+       FROM locations l JOIN categories c ON c.id = l.category_id
+       ORDER BY c.id, l.name`
+    );
+    let html = '';
+    let current = null;
+    for (const r of rows) {
+      if (r.category !== current) {
+        current = r.category;
+        html += `<h2>${esc(current)}</h2>`;
+      }
+      const img = r.photo_url ? `<img src="${esc(r.photo_url)}" alt="">` : '<img alt="">';
+      html += `<a class="card" href="/locations/${r.id}">${img}<span>${esc(r.name)}</span></a>`;
+    }
+    if (!html) html = '<p>No locations yet.</p>';
+    res.send(siteShell('Campus Locations', html));
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(siteShell('Error', '<p>Something went wrong. Please try again.</p>'));
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
