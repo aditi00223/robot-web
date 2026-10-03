@@ -158,5 +158,65 @@ app.post('/api/photos', (req, res) => {
   });
 });
 
+const pageShell = (body) => `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Photo</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #f4f6fa; color: #222; text-align: center; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 20px 14px 40px; }
+  h1 { font-size: 22px; margin: 10px 0 16px; }
+  img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
+  .btn { display: inline-block; margin-top: 20px; padding: 14px 32px; background: #1a73e8; color: #fff;
+         text-decoration: none; border-radius: 8px; font-size: 18px; }
+  p { font-size: 16px; line-height: 1.5; }
+</style>
+</head>
+<body><div class="wrap">${body}</div></body>
+</html>`;
+
+async function findPhoto(id) {
+  if (!/^[a-f0-9]{12}$/.test(id)) return null;
+  const [rows] = await pool.query(
+    'SELECT id, image_url FROM photos WHERE id = ? AND (expires_at IS NULL OR expires_at > NOW())',
+    [id]
+  );
+  return rows[0] || null;
+}
+
+app.get('/photo/:id', async (req, res) => {
+  try {
+    const photo = await findPhoto(req.params.id);
+    if (!photo) {
+      return res.status(404).send(pageShell(
+        '<h1>Photo not found</h1><p>This photo link is missing or has expired. Please ask the robot to take a new one.</p>'
+      ));
+    }
+    res.send(pageShell(
+      `<h1>Your photo from the robot</h1>
+       <img src="${photo.image_url}" alt="Your photo">
+       <a class="btn" href="/photo/${photo.id}/download">Download</a>`
+    ));
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(pageShell('<h1>Something went wrong</h1><p>Please try again in a moment.</p>'));
+  }
+});
+
+app.get('/photo/:id/download', async (req, res) => {
+  try {
+    const photo = await findPhoto(req.params.id);
+    if (!photo) return res.status(404).send('Photo not found');
+    const file = path.join(__dirname, photo.image_url);
+    res.download(file, 'robot-photo' + path.extname(file));
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
