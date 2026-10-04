@@ -26,19 +26,16 @@ const Voice = {
     this.rec = rec;
     rec.lang = "en-IN";
     rec.continuous = true;
-    rec.interimResults = true;
+    rec.interimResults = false;
 
     rec.onstart = () => this.status("listening");
     rec.onspeechstart = () => this.status("hearing speech");
     rec.onresult = (e) => {
       const r = e.results[e.results.length - 1];
-      const text = r[0].transcript.trim().toLowerCase();
       if (r.isFinal) {
         this.delay = 300;
-        this.status("heard: " + text);
-        onText(text, true);
-      } else if (text) {
-        onText(text, false);
+        this.status("heard: " + r[0].transcript.trim());
+        onText(r[0].transcript.trim().toLowerCase());
       }
     };
     rec.onerror = (e) => {

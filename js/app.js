@@ -3,6 +3,7 @@ const PHOTO = /\b(1|one|won|wan|ek|photo|photos|foto)\b/;
 const DIRECTIONS = /\b(2|two|to|too|tu|do|direction|directions)\b/;
 const IDLE_HINT = 'Say "Hello Robo" to wake me';
 const QR_SECONDS = 30;
+const SHORT_ANSWER = /^(1|one|won|wan|ek|2|two|to|too|tu|do|photo|photos|direction|directions)$/;
 const ROUTE_SECONDS = 30;
 const MAX_TRIES = 2;
 
@@ -400,6 +401,7 @@ function onHeard(text, isFinal = true) {
   if (!text) return;
   if (busy) return;
   hint.textContent = 'Heard: "' + text + '"';
+  if (!isFinal && state !== "idle" && !(state === "menu" && SHORT_ANSWER.test(text))) return;
   if (state === "idle") {
     if (WAKE.test(text)) wake();
   } else if (state === "menu") {
@@ -445,6 +447,9 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
+
+
+
 
 
 
