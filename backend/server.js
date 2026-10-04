@@ -364,7 +364,7 @@ app.get('/slip/:locationId', async (req, res) => {
   try {
     const from = req.query.from || 'main_gate';
     let width = parseInt(req.query.width, 10);
-    if (!(width >= 40 && width <= 110)) width = 58;
+    if (!(width >= 30 && width <= 100)) width = 48;
 
     const [starts] = await pool.query(
       'SELECT id, name FROM start_points WHERE slug = ? OR name = ?',
@@ -387,12 +387,19 @@ app.get('/slip/:locationId', async (req, res) => {
       : [];
 
     const base = process.env.PUBLIC_URL || req.protocol + '://' + req.get('host');
-    const qr = await QRCode.toDataURL(base + '/locations/' + locs[0].id, { margin: 1, width: 300 });
+    const qr = await QRCode.toDataURL(base + '/locations/' + locs[0].id, {
+      margin: 1,
+      width: 240,
+      errorCorrectionLevel: 'M',
+      color: { dark: '#000000', light: '#ffffff' },
+    });
 
     const stepsHtml = steps.length
       ? '<ol>' + steps.map((s) => `<li>${esc(s)}</li>`).join('') + '</ol>'
-      : '<p>Ask the help desk for directions.</p>';
-    const info = route ? `<p class="meta">${route.distance_m} m, about ${route.time_min} min walk</p>` : '';
+      : '<p class="note">Ask the help desk for directions.</p>';
+    const info = route
+      ? `<p class="info">${route.distance_m} m, about ${route.time_min} min</p>`
+      : '';
 
     res.send(`<!DOCTYPE html>
 <html lang="en">
@@ -401,14 +408,17 @@ app.get('/slip/:locationId', async (req, res) => {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Directions to ${esc(locs[0].name)}</title>
 <style>
-  @page { size: ${width}mm auto; margin: 2mm; }
-  body { font-family: Arial, sans-serif; width: ${width - 4}mm; margin: 0 auto; color: #000; }
-  h1 { font-size: 16px; text-align: center; margin: 6px 0 2px; }
-  .from, .meta { font-size: 12px; text-align: center; margin: 2px 0; }
-  ol { font-size: 13px; padding-left: 18px; margin: 8px 0; }
+  @page { size: 58mm auto; margin: 0; }
+  html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+  body { width: ${width}mm; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.3; }
+  h1 { font-size: 20px; font-weight: bold; text-align: center; margin: 4px 0 2px; }
+  .from, .info { text-align: center; margin: 2px 0; font-size: 13px; }
+  ol { margin: 8px 0; padding-left: 20px; font-size: 14px; }
   li { margin-bottom: 4px; }
-  img { display: block; width: 70%; margin: 8px auto 2px; }
-  .scan { font-size: 11px; text-align: center; margin: 0 0 8px; }
+  .note { text-align: center; margin: 8px 0; }
+  .qr { display: block; width: 30mm; height: 30mm; margin: 8px auto 2px; }
+  .scan, .thanks { text-align: center; margin: 2px 0; font-size: 12px; }
+  .thanks { font-weight: bold; font-size: 14px; margin: 6px 0 12px; }
 </style>
 </head>
 <body>
@@ -416,8 +426,9 @@ app.get('/slip/:locationId', async (req, res) => {
 <p class="from">From: ${esc(starts[0].name)}</p>
 ${info}
 ${stepsHtml}
-<img src="${qr}" alt="QR code">
+<img class="qr" src="${qr}" alt="QR code">
 <p class="scan">Scan for photos and map</p>
+<p class="thanks">Thank you!</p>
 </body>
 </html>`);
   } catch (err) {
