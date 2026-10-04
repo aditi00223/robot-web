@@ -427,23 +427,7 @@ ${stepsHtml}
 });
 
 
-app.get('/api/dbtest', async (req, res) => {
-  try {
-    await pool.query('SELECT 1');
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({
-      code: e.code,
-      message: e.message,
-      errors: (e.errors || []).map((x) => x.code + ' ' + x.address + ':' + x.port),
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT,
-      ssl: process.env.DB_SSL,
-      user: process.env.DB_USER,
-      database: process.env.DB_NAME,
-    });
-  }
-});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
