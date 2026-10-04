@@ -1,101 +1,103 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const pool = require('./db');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const pool = require("./db");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 // Building photos are served from backend/public
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/', (req, res) => res.send('Robot backend is running'));
+app.get("/", (req, res) => res.send("Robot backend is running"));
 
-app.get('/api/categories', async (req, res) => {
+app.get("/api/categories", async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT id, name FROM categories ORDER BY id');
+    const [rows] = await pool.query(
+      "SELECT id, name FROM categories ORDER BY id",
+    );
     res.json(rows);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.get('/api/locations', async (req, res) => {
+app.get("/api/locations", async (req, res) => {
   try {
     const { category_id } = req.query;
-    let sql = 'SELECT id, name, category_id, photo_url AS thumb_url FROM locations';
+    let sql =
+      "SELECT id, name, category_id, photo_url AS thumb_url FROM locations";
     const params = [];
     if (category_id) {
-      sql += ' WHERE category_id = ?';
+      sql += " WHERE category_id = ?";
       params.push(category_id);
     }
-    sql += ' ORDER BY name';
+    sql += " ORDER BY name";
     const [rows] = await pool.query(sql, params);
     res.json(rows);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.get('/api/locations/:id', async (req, res) => {
+app.get("/api/locations/:id", async (req, res) => {
   try {
     const [rows] = await pool.query(
       `SELECT id, name, description, latitude, longitude, photo_url
        FROM locations WHERE id = ?`,
-      [req.params.id]
+      [req.params.id],
     );
     if (rows.length === 0) {
-      return res.status(404).json({ error: 'Location not found' });
+      return res.status(404).json({ error: "Location not found" });
     }
     const loc = rows[0];
     loc.latitude = loc.latitude === null ? null : Number(loc.latitude);
     loc.longitude = loc.longitude === null ? null : Number(loc.longitude);
 
     const [extra] = await pool.query(
-      'SELECT photo_url FROM location_photos WHERE location_id = ?',
-      [loc.id]
+      "SELECT photo_url FROM location_photos WHERE location_id = ?",
+      [loc.id],
     );
     loc.photos = extra.map((p) => p.photo_url);
     res.json(loc);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
-}); 
+});
 
-
-app.get('/api/directions', async (req, res) => {
+app.get("/api/directions", async (req, res) => {
   try {
     const from = req.query.from;
     const to = req.query.to;
     if (!from || !to) {
-      return res.status(400).json({ error: 'from and to are required' });
+      return res.status(400).json({ error: "from and to are required" });
     }
 
     const [starts] = await pool.query(
-      'SELECT id FROM start_points WHERE slug = ? OR name = ?',
-      [from, from]
+      "SELECT id FROM start_points WHERE slug = ? OR name = ?",
+      [from, from],
     );
     if (starts.length === 0) {
-      return res.status(404).json({ error: 'Start point not found' });
+      return res.status(404).json({ error: "Start point not found" });
     }
 
     const [rows] = await pool.query(
       `SELECT l.name AS \`to\`, r.distance_m, r.time_min, r.steps, r.path
        FROM routes r JOIN locations l ON l.id = r.location_id
        WHERE r.start_id = ? AND r.location_id = ?`,
-      [starts[0].id, to]
+      [starts[0].id, to],
     );
     if (rows.length === 0) {
-      return res.status(404).json({ error: 'No route found' });
+      return res.status(404).json({ error: "No route found" });
     }
 
     const row = rows[0];
-    const parse = (v) => (typeof v === 'string' ? JSON.parse(v) : v || []);
+    const parse = (v) => (typeof v === "string" ? JSON.parse(v) : v || []);
     res.json({
       to: row.to,
       distance_m: row.distance_m,
@@ -105,15 +107,14 @@ app.get('/api/directions', async (req, res) => {
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
+const multer = require("multer");
+const crypto = require("crypto");
 
-const multer = require('multer');
-const crypto = require('crypto');
-
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 const useCloud = !!(
   process.env.CLOUDINARY_CLOUD_NAME &&
   process.env.CLOUDINARY_API_KEY &&
@@ -126,66 +127,77 @@ if (useCloud) {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 }
-console.log('Selfie storage:', useCloud ? 'Cloudinary' : 'local disk');
+console.log("Selfie storage:", useCloud ? "Cloudinary" : "local disk");
 
-const fs = require('fs');
+const fs = require("fs");
 
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
-const UPLOAD_DIR = path.join(__dirname, 'uploads');
+const UPLOAD_DIR = path.join(__dirname, "uploads");
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-app.use('/uploads', express.static(UPLOAD_DIR));
+app.use("/uploads", express.static(UPLOAD_DIR));
 
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (['image/jpeg', 'image/png'].includes(file.mimetype)) cb(null, true);
-    else cb(new Error('Only JPEG or PNG allowed'));
+    if (["image/jpeg", "image/png"].includes(file.mimetype)) cb(null, true);
+    else cb(new Error("Only JPEG or PNG allowed"));
   },
 });
 
-app.post('/api/photos', (req, res) => {
-  upload.single('photo')(req, res, async (err) => {
+app.post("/api/photos", (req, res) => {
+  upload.single("photo")(req, res, async (err) => {
     if (err) {
-      const msg = err.code === 'LIMIT_FILE_SIZE' ? 'File too large (max 5 MB)' : err.message;
+      const msg =
+        err.code === "LIMIT_FILE_SIZE"
+          ? "File too large (max 5 MB)"
+          : err.message;
       return res.status(400).json({ error: msg });
     }
     if (!req.file) {
-      return res.status(400).json({ error: 'No photo uploaded' });
+      return res.status(400).json({ error: "No photo uploaded" });
     }
     try {
-      const id = crypto.randomBytes(6).toString('hex');
-      const ext = req.file.mimetype === 'image/png' ? 'png' : 'jpg';
-            let imageUrl = null;
+      const id = crypto.randomBytes(6).toString("hex");
+      const ext = req.file.mimetype === "image/png" ? "png" : "jpg";
+      let imageUrl = null;
       if (useCloud) {
         try {
           const result = await new Promise((resolve, reject) => {
             cloudinary.uploader
               .upload_stream(
-                { folder: 'robot-selfies', public_id: id, resource_type: 'image' },
-                (e, r) => (e ? reject(e) : resolve(r))
+                {
+                  folder: "robot-selfies",
+                  public_id: id,
+                  resource_type: "image",
+                },
+                (e, r) => (e ? reject(e) : resolve(r)),
               )
               .end(req.file.buffer);
           });
           imageUrl = result.secure_url;
         } catch (e) {
-          console.error('Cloudinary upload failed, saving locally:', e.message);
+          console.error("Cloudinary upload failed, saving locally:", e.message);
         }
       }
       if (!imageUrl) {
-        const filename = id + '.' + ext;
+        const filename = id + "." + ext;
         fs.writeFileSync(path.join(UPLOAD_DIR, filename), req.file.buffer);
-        imageUrl = '/uploads/' + filename;
+        imageUrl = "/uploads/" + filename;
       }
 
-      await pool.query('INSERT INTO photos (id, image_url) VALUES (?, ?)', [id, imageUrl]);
+      await pool.query("INSERT INTO photos (id, image_url) VALUES (?, ?)", [
+        id,
+        imageUrl,
+      ]);
 
-      const base = process.env.PUBLIC_URL || req.protocol + '://' + req.get('host');
-      res.json({ id, url: base + '/photo/' + id });
+      const base =
+        process.env.PUBLIC_URL || req.protocol + "://" + req.get("host");
+      res.json({ id, url: base + "/photo/" + id });
     } catch (e) {
       console.error(e.message);
-      res.status(500).json({ error: 'Server error' });
+      res.status(500).json({ error: "Server error" });
     }
   });
 });
@@ -212,51 +224,70 @@ const pageShell = (body) => `<!DOCTYPE html>
 async function findPhoto(id) {
   if (!/^[a-f0-9]{12}$/.test(id)) return null;
   const [rows] = await pool.query(
-    'SELECT id, image_url FROM photos WHERE id = ? AND (expires_at IS NULL OR expires_at > NOW())',
-    [id]
+    "SELECT id, image_url FROM photos WHERE id = ? AND (expires_at IS NULL OR expires_at > NOW())",
+    [id],
   );
   return rows[0] || null;
 }
 
-app.get('/photo/:id', async (req, res) => {
+app.get("/photo/:id", async (req, res) => {
   try {
     const photo = await findPhoto(req.params.id);
     if (!photo) {
-      return res.status(404).send(pageShell(
-        '<h1>Photo not found</h1><p>This photo link is missing or has expired. Please ask the robot to take a new one.</p>'
-      ));
+      return res
+        .status(404)
+        .send(
+          pageShell(
+            "<h1>Photo not found</h1><p>This photo link is missing or has expired. Please ask the robot to take a new one.</p>",
+          ),
+        );
     }
-    res.send(pageShell(
-      `<h1>Your photo from the robot</h1>
+    res.send(
+      pageShell(
+        `<h1>Your photo from the robot</h1>
        <img src="${photo.image_url}" alt="Your photo">
-       <a class="btn" href="/photo/${photo.id}/download">Download</a>`
-    ));
+       <a class="btn" href="/photo/${photo.id}/download">Download</a>`,
+      ),
+    );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(pageShell('<h1>Something went wrong</h1><p>Please try again in a moment.</p>'));
+    res
+      .status(500)
+      .send(
+        pageShell(
+          "<h1>Something went wrong</h1><p>Please try again in a moment.</p>",
+        ),
+      );
   }
 });
 
-app.get('/photo/:id/download', async (req, res) => {
+app.get("/photo/:id/download", async (req, res) => {
   try {
     const photo = await findPhoto(req.params.id);
-    if (!photo) return res.status(404).send('Photo not found');
-       if (photo.image_url.startsWith('http')) {
-      return res.redirect(photo.image_url.replace('/upload/', '/upload/fl_attachment/'));
+    if (!photo) return res.status(404).send("Photo not found");
+    if (photo.image_url.startsWith("http")) {
+      return res.redirect(
+        photo.image_url.replace("/upload/", "/upload/fl_attachment/"),
+      );
     }
     const file = path.join(__dirname, photo.image_url);
-    res.download(file, 'robot-photo' + path.extname(file));
+    res.download(file, "robot-photo" + path.extname(file));
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
-
 const esc = (s) =>
-  String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  String(s ?? "").replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
+  );
 
-const siteShell = (title, body, head = '') => `<!DOCTYPE html>
+const siteShell = (title, body, head = "") => `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -285,43 +316,54 @@ ${head}
 </body>
 </html>`;
 
-app.get('/locations', async (req, res) => {
+app.get("/locations", async (req, res) => {
   try {
     const [rows] = await pool.query(
       `SELECT l.id, l.name, l.photo_url, c.name AS category
        FROM locations l JOIN categories c ON c.id = l.category_id
-       ORDER BY c.id, l.name`
+       ORDER BY c.id, l.name`,
     );
-    let html = '';
+    let html = "";
     let current = null;
     for (const r of rows) {
       if (r.category !== current) {
         current = r.category;
         html += `<h2>${esc(current)}</h2>`;
       }
-      const img = r.photo_url ? `<img src="${esc(r.photo_url)}" alt="">` : '<img alt="">';
+      const img = r.photo_url
+        ? `<img src="${esc(r.photo_url)}" alt="">`
+        : '<img alt="">';
       html += `<a class="card" href="/locations/${r.id}">${img}<span>${esc(r.name)}</span></a>`;
     }
-    if (!html) html = '<p>No locations yet.</p>';
-    res.send(siteShell('Campus Locations', html));
+    if (!html) html = "<p>No locations yet.</p>";
+    res.send(siteShell("Campus Locations", html));
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(siteShell('Error', '<p>Something went wrong. Please try again.</p>'));
+    res
+      .status(500)
+      .send(
+        siteShell("Error", "<p>Something went wrong. Please try again.</p>"),
+      );
   }
 });
 
-
-app.get('/locations/:id', async (req, res) => {
+app.get("/locations/:id", async (req, res) => {
   try {
     const [rows] = await pool.query(
       `SELECT l.id, l.name, l.description, l.latitude, l.longitude, l.photo_url, c.name AS category
        FROM locations l JOIN categories c ON c.id = l.category_id
        WHERE l.id = ?`,
-      [req.params.id]
+      [req.params.id],
     );
     if (rows.length === 0) {
-      return res.status(404).send(siteShell('Not found',
-        '<p>Sorry, we could not find that place. <a href="/locations">Back to all locations</a></p>'));
+      return res
+        .status(404)
+        .send(
+          siteShell(
+            "Not found",
+            '<p>Sorry, we could not find that place. <a href="/locations">Back to all locations</a></p>',
+          ),
+        );
     }
     const loc = rows[0];
     const lat = loc.latitude === null ? null : Number(loc.latitude);
@@ -329,7 +371,8 @@ app.get('/locations/:id', async (req, res) => {
     const hasMap = lat !== null && lng !== null;
 
     let body = `<h1>${esc(loc.name)}</h1><p><small>${esc(loc.category)}</small></p>`;
-    if (loc.photo_url) body += `<img class="hero" src="${esc(loc.photo_url)}" alt="${esc(loc.name)}">`;
+    if (loc.photo_url)
+      body += `<img class="hero" src="${esc(loc.photo_url)}" alt="${esc(loc.name)}">`;
     if (loc.description) body += `<p>${esc(loc.description)}</p>`;
     if (hasMap) {
       body += `<div id="map"></div>
@@ -348,58 +391,64 @@ app.get('/locations/:id', async (req, res) => {
     const head = hasMap
       ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
          <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>`
-      : '';
+      : "";
     res.send(siteShell(loc.name, body, head));
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(siteShell('Error', '<p>Something went wrong. Please try again.</p>'));
+    res
+      .status(500)
+      .send(
+        siteShell("Error", "<p>Something went wrong. Please try again.</p>"),
+      );
   }
 });
 
+const QRCode = require("qrcode");
 
-
-const QRCode = require('qrcode');
-
-app.get('/slip/:locationId', async (req, res) => {
+app.get("/slip/:locationId", async (req, res) => {
   try {
-    const from = req.query.from || 'main_gate';
+    const from = req.query.from || "main_gate";
     let width = parseInt(req.query.width, 10);
     if (!(width >= 30 && width <= 100)) width = 48;
 
     const [starts] = await pool.query(
-      'SELECT id, name FROM start_points WHERE slug = ? OR name = ?',
-      [from, from]
+      "SELECT id, name FROM start_points WHERE slug = ? OR name = ?",
+      [from, from],
     );
-    const [locs] = await pool.query('SELECT id, name FROM locations WHERE id = ?', [
-      req.params.locationId,
-    ]);
+    const [locs] = await pool.query(
+      "SELECT id, name FROM locations WHERE id = ?",
+      [req.params.locationId],
+    );
     if (starts.length === 0 || locs.length === 0) {
-      return res.status(404).send('Place not found');
+      return res.status(404).send("Place not found");
     }
 
     const [routes] = await pool.query(
-      'SELECT distance_m, time_min, steps FROM routes WHERE start_id = ? AND location_id = ?',
-      [starts[0].id, locs[0].id]
+      "SELECT distance_m, time_min, steps FROM routes WHERE start_id = ? AND location_id = ?",
+      [starts[0].id, locs[0].id],
     );
     const route = routes[0];
     const steps = route
-      ? typeof route.steps === 'string' ? JSON.parse(route.steps) : route.steps || []
+      ? typeof route.steps === "string"
+        ? JSON.parse(route.steps)
+        : route.steps || []
       : [];
 
-    const base = process.env.PUBLIC_URL || req.protocol + '://' + req.get('host');
-    const qr = await QRCode.toDataURL(base + '/locations/' + locs[0].id, {
+    const base =
+      process.env.PUBLIC_URL || req.protocol + "://" + req.get("host");
+    const qr = await QRCode.toDataURL(base + "/locations/" + locs[0].id, {
       margin: 1,
       width: 240,
-      errorCorrectionLevel: 'M',
-      color: { dark: '#000000', light: '#ffffff' },
+      errorCorrectionLevel: "M",
+      color: { dark: "#000000", light: "#ffffff" },
     });
 
     const stepsHtml = steps.length
-      ? '<ol>' + steps.map((s) => `<li>${esc(s)}</li>`).join('') + '</ol>'
+      ? "<ol>" + steps.map((s) => `<li>${esc(s)}</li>`).join("") + "</ol>"
       : '<p class="note">Ask the help desk for directions.</p>';
     const info = route
       ? `<p class="info">${route.distance_m} m, about ${route.time_min} min</p>`
-      : '';
+      : "";
 
     res.send(`<!DOCTYPE html>
 <html lang="en">
@@ -433,12 +482,9 @@ ${stepsHtml}
 </html>`);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
-
-
-
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('Server running on port ' + PORT));
+app.listen(PORT, () => console.log("Server running on port " + PORT));
