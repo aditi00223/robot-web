@@ -364,13 +364,14 @@ async function pickPlace(loc) {
   backToIdle();
 }
 
-function handleListChoice(text, what, onPick) {
+function handleListChoice(text, what, onPick, isFinal) {
   dirHint.textContent = 'Heard: "' + text + '"';
   const found = matchName(text, dirItems);
   if (found) {
     onPick(found);
     return;
   }
+  if (!isFinal) return;
   dirTries++;
   if (dirTries >= MAX_TRIES) {
     dirHint.textContent = "Sorry, going back";
@@ -395,7 +396,7 @@ function choose(what) {
   else startDirections();
 }
 
-function onHeard(text) {
+function onHeard(text, isFinal = true) {
   if (!text) return;
   if (busy) return;
   hint.textContent = 'Heard: "' + text + '"';
@@ -408,9 +409,9 @@ function onHeard(text) {
     if (wantsPhoto) choose("photo");
     else if (wantsDirections) choose("directions");
   } else if (state === "dir_cat") {
-    handleListChoice(text, "category", pickCategory);
+    handleListChoice(text, "category", pickCategory, isFinal);
   } else if (state === "dir_place") {
-    handleListChoice(text, "place", pickPlace);
+    handleListChoice(text, "place", pickPlace, isFinal);
   }
 }
 
@@ -444,6 +445,7 @@ document.addEventListener("click", () => {
     Voice.start(onHeard);
   }
 });
+
 
 
 

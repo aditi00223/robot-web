@@ -1,6 +1,6 @@
 const API = {
-  MOCK: true,
-  BASE_URL: "http://localhost:4000",
+  MOCK: false,
+  BASE_URL: "https://robo-nav-backend.onrender.com",
   START: "main_gate",
 
   _paths: {
@@ -34,7 +34,17 @@ const API = {
   ],
 
   async _get(path) {
-    const res = await fetch(this.BASE_URL + path);
+    let res;
+    for (let i = 0; i < 3; i++) {
+      try {
+        res = await fetch(this.BASE_URL + path);
+        if (res.ok || res.status < 500) break;
+      } catch (e) {
+        if (i === 2) throw e;
+      }
+      await new Promise((r) => setTimeout(r, 3000));
+    }
+    if (!res) throw new Error("No response from server");
     if (!res.ok) throw new Error("Request failed: " + res.status);
     return await res.json();
   },
@@ -85,3 +95,10 @@ const API = {
   }
 };
 
+
+
+if (new URLSearchParams(location.search).get("mock") === "1") API.MOCK = true;
+if (!API.MOCK) {
+  API.getCategories().catch(() => {});
+  setInterval(() => API.getCategories().catch(() => {}), 10 * 60 * 1000);
+}
