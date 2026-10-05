@@ -150,3 +150,19 @@ body {
   border-radius: 20px;
   box-shadow: 0 0 30px #5cc8ff44;
 }
+
+@media (min-width: 900px) and (orientation: portrait) {
+  .eye { width: 22vw; height: 22vw; max-width: 300px; max-height: 300px; }
+  .hint { font-size: clamp(28px, 5vw, 64px); }
+  .btn { font-size: clamp(36px, 5vw, 64px); padding: 36px 72px; min-width: 480px; }
+  .tile { font-size: clamp(32px, 4.5vw, 56px); padding: 36px 56px; min-width: 380px; }
+  .dir-title { font-size: clamp(40px, 6vw, 80px); }
+  .dir-meta { font-size: clamp(28px, 3.6vw, 44px); }
+  .dir-steps { font-size: clamp(32px, 4.4vw, 56px); }
+  .dir-desc { font-size: clamp(26px, 3.4vw, 42px); }
+  .dir-map { width: min(88vw, 900px); }
+  .dir-photo { width: min(88vw, 900px); max-height: 40vh; }
+  .camera-box { width: min(92vw, 980px); }
+  #qr-code img, #qr-code canvas, #qr-code svg { width: min(36vh, 560px); height: min(36vh, 560px); }
+  .qr-url { font-size: clamp(22px, 3vw, 34px); }
+}
