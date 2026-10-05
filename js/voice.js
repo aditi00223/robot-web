@@ -6,12 +6,12 @@ const Voice = {
 
   status(msg) {
     console.log("Voice:", msg);
-    if (!this.label) {
+    if (!this.label && new URLSearchParams(location.search).get("debug") === "1") {
       this.label = document.createElement("div");
       this.label.style.cssText = "position:fixed;left:8px;bottom:8px;font:14px system-ui;opacity:.7;color:#9fb4cc;z-index:99;";
       document.body.appendChild(this.label);
     }
-    this.label.textContent = "mic: " + msg;
+    if (this.label) if (this.label) this.label.textContent = "mic: " + msg;
   },
 
   start(onText) {
@@ -64,3 +64,5 @@ const Voice = {
     this.status("off");
   }
 };
+
+
