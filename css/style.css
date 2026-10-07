@@ -138,3 +138,15 @@ button { font-family: inherit; }
 }
 .dir-photo { max-height: 44vh; }
 .dir-desc { font-size: 5vmin; }
+
+.dir-title {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: 0.6vmin solid #fbcfe8;
+  box-shadow: 0 0 5vmin rgba(236,72,153,0.65);
+}
+.hint { color: #ffe066; text-shadow: 0 0 3vmin rgba(255,200,60,0.55); }
+#dir-hint { color: #ffffff; font-size: 4.2vmin; text-shadow: none; }
+#screen-directions { padding: 3vmin 5vmin; }
+#screen-directions > * + * { margin-top: 2.6vmin; }
+.tile { min-height: 9vh; max-height: 15vh; font-size: 7vmin; }
+#btn-dir-home { width: 46vmin; padding: 2vmin; font-size: 5vmin; }
