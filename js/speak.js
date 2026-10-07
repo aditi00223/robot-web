@@ -3,7 +3,7 @@ const Speak = {
   caption(text) {
     const el = document.getElementById("caption");
     if (!el) return;
-    if (/^\d+$/.test(text)) text = "";
+    if (/^\d+$/.test(text) || text.length > 70) text = "";
     el.textContent = text;
     el.hidden = !text;
   },
@@ -24,4 +24,5 @@ const Speak = {
     window.speechSynthesis.cancel();
   }
 };
+
 
