@@ -474,3 +474,33 @@ window.onVoiceStatus = (msg) => {
   bar.hidden = !t;
 };
 
+
+(function () {
+  const eyes = Array.from(document.querySelectorAll(".eye"));
+  const irises = Array.from(document.querySelectorAll(".iris"));
+  if (!eyes.length) return;
+
+  function look(x, y) {
+    irises.forEach((i) => {
+      i.style.setProperty("--lx", x + "vmin");
+      i.style.setProperty("--ly", y + "vmin");
+    });
+  }
+  function wander() {
+    look((Math.random() * 2 - 1) * 4.5, (Math.random() * 2 - 1) * 3);
+    setTimeout(wander, 1500 + Math.random() * 2500);
+  }
+  function blink() {
+    eyes.forEach((e) => e.classList.add("closed"));
+    setTimeout(() => eyes.forEach((e) => e.classList.remove("closed")), 130);
+    setTimeout(blink, 2500 + Math.random() * 3500);
+  }
+  document.addEventListener("pointerdown", (ev) => {
+    const r = document.getElementById("eyes").getBoundingClientRect();
+    const dx = (ev.clientX - (r.left + r.width / 2)) / r.width;
+    const dy = (ev.clientY - (r.top + r.height / 2)) / r.height;
+    look(Math.max(-1, Math.min(1, dx)) * 5, Math.max(-1, Math.min(1, dy)) * 4);
+  });
+  wander();
+  setTimeout(blink, 2000);
+})();
