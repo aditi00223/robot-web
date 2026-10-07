@@ -1,25 +1,361 @@
 {
   "start_point": {
     "name": "Main Gate",
-    "latitude": 30.0,
-    "longitude": 76.0
+    "latitude": 30.68091,
+    "longitude": 76.60577
   },
   "blocks": [
     {
-      "name": "CSE Block",
-      "category": "Academic Blocks",
-      "latitude": 30.001,
-      "longitude": 76.001,
-      "description": "Computer Science labs and classrooms. 4 floors.",
-      "photo": "cse_block.jpg"
+      "name": "Nescafe",
+      "category": "Canteens and Cafes",
+      "latitude": 30.68098,
+      "longitude": 76.607553,
+      "description": "Nescafe coffee kiosk.",
+      "photo": "nescafe.jpg"
     },
     {
-      "name": "Boys Hostel 1",
+      "name": "Chuttar Puttar",
+      "category": "Fast Food and Snacks",
+      "latitude": 30.68097,
+      "longitude": 76.607503,
+      "description": "Food outlet on campus.",
+      "photo": "chuttar_puttar.jpg"
+    },
+    {
+      "name": "Buddy Bistro",
+      "category": "Canteens and Cafes",
+      "latitude": 30.680994,
+      "longitude": 76.607798,
+      "description": "Cafe on campus.",
+      "photo": "buddy_bistro.jpg"
+    },
+    {
+      "name": "Dominoz",
+      "category": "Fast Food and Snacks",
+      "latitude": 30.680964,
+      "longitude": 76.607921,
+      "description": "Domino's pizza outlet.",
+      "photo": "dominoz.jpg"
+    },
+    {
+      "name": "Herbal Garden",
+      "category": "Sports and Recreation",
+      "latitude": 30.682027,
+      "longitude": 76.60817,
+      "description": "Herbal garden.",
+      "photo": "herbal_garden.jpg"
+    },
+    {
+      "name": "Mid Gate of Block 3 and 4",
+      "category": "Academic Blocks",
+      "latitude": 30.68161,
+      "longitude": 76.607839,
+      "description": "Middle gate between Block 3 and Block 4.",
+      "photo": "mid_gate_of_block_3_and_4.jpg"
+    },
+    {
+      "name": "Gate 1",
+      "category": "Landmarks and Gates",
+      "latitude": 30.682708,
+      "longitude": 76.608078,
+      "description": "Campus Gate 1.",
+      "photo": "gate_1.jpg"
+    },
+    {
+      "name": "NCC Boat",
+      "category": "Landmarks and Gates",
+      "latitude": 30.682574,
+      "longitude": 76.607465,
+      "description": "NCC Boat.",
+      "photo": "ncc_boat.jpg"
+    },
+    {
+      "name": "Block 4 Main Gate",
+      "category": "Academic Blocks",
+      "latitude": 30.681981,
+      "longitude": 76.607676,
+      "description": "Main gate of Block 4.",
+      "photo": "block_4_main_gate.jpg"
+    },
+    {
+      "name": "Block 3 Main Gate",
+      "category": "Academic Blocks",
+      "latitude": 30.68122,
+      "longitude": 76.6077,
+      "description": "Main gate of Block 3.",
+      "photo": "block_3_main_gate.jpg"
+    },
+    {
+      "name": "Block 5 Girls Entry",
+      "category": "Academic Blocks",
+      "latitude": 30.68183,
+      "longitude": 76.606812,
+      "description": "Girls entry gate of Block 5.",
+      "photo": "block_5_girls_entry.jpg"
+    },
+    {
+      "name": "Block 5 Main Gate",
+      "category": "Academic Blocks",
+      "latitude": 30.68226,
+      "longitude": 76.606774,
+      "description": "Main gate of Block 5.",
+      "photo": "block_5_main_gate.jpg"
+    },
+    {
+      "name": "Block 6 Gate (Front of Block 5)",
+      "category": "Academic Blocks",
+      "latitude": 30.682195,
+      "longitude": 76.606688,
+      "description": "Block 6 gate, in front of Block 5.",
+      "photo": "block_6_gate_front_of_block_5.jpg"
+    },
+    {
+      "name": "Block 6 Main Gate",
+      "category": "Academic Blocks",
+      "latitude": 30.682325,
+      "longitude": 76.606441,
+      "description": "Main gate of Block 6.",
+      "photo": "block_6_main_gate.jpg"
+    },
+    {
+      "name": "Easy Day",
+      "category": "Shops and Services",
+      "latitude": 30.680527,
+      "longitude": 76.606604,
+      "description": "Easy Day store.",
+      "photo": "easy_day.jpg"
+    },
+    {
+      "name": "Block 2 Easy Day Gate",
+      "category": "Academic Blocks",
+      "latitude": 30.680509,
+      "longitude": 76.606931,
+      "description": "Block 2 gate next to Easy Day.",
+      "photo": "block_2_easy_day_gate.jpg"
+    },
+    {
+      "name": "Innovation Lab Block 1",
+      "category": "Labs and Workshops",
+      "latitude": 30.680734,
+      "longitude": 76.606913,
+      "description": "Innovation Lab in Block 1.",
+      "photo": "innovation_lab_block_1.jpg"
+    },
+    {
+      "name": "Workshop 1",
+      "category": "Labs and Workshops",
+      "latitude": 30.680514,
+      "longitude": 76.605755,
+      "description": "Workshop 1.",
+      "photo": "workshop_1.jpg"
+    },
+    {
+      "name": "Boys Entry Gate Block 1",
+      "category": "Academic Blocks",
+      "latitude": 30.680014,
+      "longitude": 76.606404,
+      "description": "Boys entry gate of Block 1.",
+      "photo": "boys_entry_gate_block_1.jpg"
+    },
+    {
+      "name": "Block 1 Main Gate Admission Cell",
+      "category": "Academic Blocks",
+      "latitude": 30.680382,
+      "longitude": 76.605077,
+      "description": "Block 1 main gate, near the admission cell.",
+      "photo": "block_1_main_gate_admission_cell.jpg"
+    },
+    {
+      "name": "Block 1 Library Gate",
+      "category": "Academic Blocks",
+      "latitude": 30.681743,
+      "longitude": 76.605588,
+      "description": "Block 1 gate near the library.",
+      "photo": "block_1_library_gate.jpg"
+    },
+    {
+      "name": "Applebees Ground Gate",
+      "category": "Fast Food and Snacks",
+      "latitude": 30.681347,
+      "longitude": 76.605535,
+      "description": "Ground gate side of Applebees.",
+      "photo": "applebees_ground_gate.jpg"
+    },
+    {
+      "name": "Applebees Main Shop",
+      "category": "Fast Food and Snacks",
+      "latitude": 30.681625,
+      "longitude": 76.604896,
+      "description": "Applebees main shop.",
+      "photo": "applebees_main_shop.jpg"
+    },
+    {
+      "name": "Rosewood Hostel",
       "category": "Hostels",
-      "latitude": 30.002,
-      "longitude": 76.002,
-      "description": "Boys hostel with mess and common room.",
-      "photo": "boys_hostel_1.jpg"
+      "latitude": 30.68158,
+      "longitude": 76.605708,
+      "description": "Rosewood Hostel.",
+      "photo": "rosewood_hostel.jpg"
+    },
+    {
+      "name": "Axis Bank",
+      "category": "Shops and Services",
+      "latitude": 30.682172,
+      "longitude": 76.605582,
+      "description": "Axis Bank branch on campus.",
+      "photo": "axis_bank.jpg"
+    },
+    {
+      "name": "Block 7 Gate 1",
+      "category": "Academic Blocks",
+      "latitude": 30.681515,
+      "longitude": 76.604581,
+      "description": "Gate 1 of Block 7, on the Block 1 side.",
+      "photo": "block_7_gate_1.jpg"
+    },
+    {
+      "name": "Capgemini Main Gate Block 7",
+      "category": "Academic Blocks",
+      "latitude": 30.681435,
+      "longitude": 76.604157,
+      "description": "Capgemini main gate, Block 7.",
+      "photo": "capgemini_main_gate_block_7.jpg"
+    },
+    {
+      "name": "Block 7 Third Gate",
+      "category": "Academic Blocks",
+      "latitude": 30.682004,
+      "longitude": 76.603297,
+      "description": "Third gate of Block 7.",
+      "photo": "block_7_third_gate.jpg"
+    },
+    {
+      "name": "Chanakya Hostel",
+      "category": "Hostels",
+      "latitude": 30.681317,
+      "longitude": 76.604723,
+      "description": "Chanakya Hostel.",
+      "photo": "chanakya_hostel.jpg"
+    },
+    {
+      "name": "Einstein Hostel",
+      "category": "Hostels",
+      "latitude": 30.681103,
+      "longitude": 76.604921,
+      "description": "Einstein Hostel.",
+      "photo": "einstein_hostel.jpg"
+    },
+    {
+      "name": "Milkha Singh Arena Gym",
+      "category": "Sports and Recreation",
+      "latitude": 30.680889,
+      "longitude": 76.604009,
+      "description": "Gym at Milkha Singh Arena.",
+      "photo": "milkha_singh_arena_gym.jpg"
+    },
+    {
+      "name": "Mandir",
+      "category": "Landmarks and Gates",
+      "latitude": 30.680524,
+      "longitude": 76.605683,
+      "description": "Campus temple.",
+      "photo": "mandir.jpg"
+    },
+    {
+      "name": "Tagore Hall",
+      "category": "Landmarks and Gates",
+      "latitude": 30.679879,
+      "longitude": 76.604882,
+      "description": "Tagore Hall.",
+      "photo": "tagore_hall.jpg"
+    },
+    {
+      "name": "Canteen",
+      "category": "Canteens and Cafes",
+      "latitude": 30.680297,
+      "longitude": 76.607667,
+      "description": "Main campus canteen.",
+      "photo": "canteen.jpg"
+    },
+    {
+      "name": "Block 2 Hostel Gate",
+      "category": "Hostels",
+      "latitude": 30.680677,
+      "longitude": 76.608069,
+      "description": "Hostel gate near Block 2.",
+      "photo": "block_2_hostel_gate.jpg"
+    },
+    {
+      "name": "Ivory Hostel",
+      "category": "Hostels",
+      "latitude": 30.681146,
+      "longitude": 76.607469,
+      "description": "Ivory Hostel.",
+      "photo": "ivory_hostel.jpg"
+    },
+    {
+      "name": "Rock and Roll",
+      "category": "Fast Food and Snacks",
+      "latitude": 30.681004,
+      "longitude": 76.607233,
+      "description": "Food outlet on campus.",
+      "photo": "rock_and_roll.jpg"
+    },
+    {
+      "name": "Dockyard",
+      "category": "Canteens and Cafes",
+      "latitude": 30.679923,
+      "longitude": 76.607773,
+      "description": "Food outlet on campus.",
+      "photo": "dockyard.jpg"
+    },
+    {
+      "name": "Top and Town",
+      "category": "Canteens and Cafes",
+      "latitude": 30.680275,
+      "longitude": 76.607285,
+      "description": "Food outlet on campus.",
+      "photo": "top_and_town.jpg"
+    },
+    {
+      "name": "Kulhad",
+      "category": "Canteens and Cafes",
+      "latitude": 30.68082,
+      "longitude": 76.607818,
+      "description": "Kulhad tea and snacks.",
+      "photo": "kulhad.jpg"
+    },
+    {
+      "name": "Tuckshop",
+      "category": "Shops and Services",
+      "latitude": 30.680554,
+      "longitude": 76.606851,
+      "description": "Campus tuckshop.",
+      "photo": "tuckshop.jpg"
+    },
+    {
+      "name": "Sip n Bite",
+      "category": "Canteens and Cafes",
+      "latitude": 30.680316,
+      "longitude": 76.607366,
+      "description": "Cafe on campus.",
+      "photo": "sip_n_bite.jpg"
+    },
+    {
+      "name": "Yumexpert",
+      "category": "Fast Food and Snacks",
+      "latitude": 30.681729,
+      "longitude": 76.606809,
+      "description": "Food outlet on campus.",
+      "photo": "yumexpert.jpg"
+    },
+    {
+      "name": "Xburger",
+      "category": "Fast Food and Snacks",
+      "latitude": 30.680926,
+      "longitude": 76.607484,
+      "description": "Burger outlet on campus.",
+      "photo": "xburger.jpg"
     }
   ]
 }
