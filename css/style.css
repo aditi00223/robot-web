@@ -177,3 +177,5 @@ button { font-family: inherit; }
 }
 .eye { animation: none !important; }
 .iris { transition: transform 0.35s ease-out; }
+
+.hint.hint-big { font-size: 9.5vmin; line-height: 1.2; }
