@@ -271,7 +271,7 @@ function drawMap(path, startName, placeName) {
   const ys = pts.map((p) => p[1]);
   const minX = Math.min(...xs), maxX = Math.max(...xs);
   const minY = Math.min(...ys), maxY = Math.max(...ys);
-  const W = 600, H = 300, pad = 50;
+  const W = 600, H = 420, pad = 70;
   const spanX = Math.max(maxX - minX, 1e-9);
   const spanY = Math.max(maxY - minY, 1e-9);
   const scale = Math.min((W - 2 * pad) / spanX, (H - 2 * pad) / spanY);
@@ -285,16 +285,16 @@ function drawMap(path, startName, placeName) {
 
   const lab = (p, text, above) => {
     const x = Math.min(Math.max(p[0], 80), 520);
-    const y = above ? p[1] - 20 : p[1] + 36;
+    const y = above ? p[1] - 26 : p[1] + 46;
     return '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) +
-      '" fill="#e6edf7" font-size="22" text-anchor="middle" font-family="system-ui, Arial">' +
+      '" fill="#e6edf7" font-size="30" text-anchor="middle" font-family="system-ui, Arial">' +
       esc(text) + "</text>";
   };
 
   dirMap.innerHTML =
-    '<path d="' + d + '" fill="none" stroke="#5cc8ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
-    '<circle cx="' + s[0].toFixed(1) + '" cy="' + s[1].toFixed(1) + '" r="11" fill="#4ade80"/>' +
-    '<circle cx="' + e[0].toFixed(1) + '" cy="' + e[1].toFixed(1) + '" r="13" fill="#f87171"/>' +
+    '<path d="' + d + '" fill="none" stroke="#5cc8ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<circle cx="' + s[0].toFixed(1) + '" cy="' + s[1].toFixed(1) + '" r="15" fill="#4ade80"/>' +
+    '<circle cx="' + e[0].toFixed(1) + '" cy="' + e[1].toFixed(1) + '" r="18" fill="#f87171"/>' +
     lab(s, startName, !endAbove) +
     lab(e, placeName, endAbove);
   dirMap.removeAttribute("hidden");
@@ -455,4 +455,22 @@ document.addEventListener("click", () => {
 
 
 
+
+
+window.onVoiceStatus = (msg) => {
+  const bar = document.getElementById("status-bar");
+  const dot = document.getElementById("status-dot");
+  const txt = document.getElementById("status-text");
+  if (!bar) return;
+  let cls = "";
+  let t = "";
+  if (msg === "listening" || msg.startsWith("heard")) { cls = "listen"; t = "Listening"; }
+  else if (msg === "hearing speech" || msg.startsWith("hearing")) { cls = "hear"; t = "Hearing you..."; }
+  else if (msg.startsWith("no internet")) { cls = "warn"; t = "Reconnecting voice..."; }
+  else if (msg.indexOf("not-allowed") >= 0) { cls = "warn"; t = "Microphone is blocked"; }
+  else if (msg.startsWith("error")) { return; }
+  dot.className = "dot " + cls;
+  txt.textContent = t;
+  bar.hidden = !t;
+};
 
