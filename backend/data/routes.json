@@ -174,16 +174,25 @@
     },
     {
       "location": "Block 3 Main Gate",
-      "distance_m": 190,
-      "time_min": 3,
+      "distance_m": 250,
+      "time_min": 4,
       "steps": [
-        "Walk east for about 190 metres",
+        "Go straight from Main Gate",
+        "Take the left curve",
+        "Easy Day is on your right",
+        "Go straight, then turn right",
+        "Go straight, then turn left",
+        "Go straight, then turn right",
         "Block 3 Main Gate is ahead"
       ],
       "path": [
         [
           30.68091,
           76.60577
+        ],
+        [
+          30.680527,
+          76.606604
         ],
         [
           30.68122,
