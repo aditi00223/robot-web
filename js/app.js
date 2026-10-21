@@ -260,7 +260,7 @@ function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function drawMap(path, startName, placeName) {
+function drawMapSvg(path, startName, placeName) {
   if (!path || path.length < 2) {
     dirMap.setAttribute("hidden", "");
     return;
@@ -298,6 +298,79 @@ function drawMap(path, startName, placeName) {
     lab(s, startName, !endAbove) +
     lab(e, placeName, endAbove);
   dirMap.removeAttribute("hidden");
+}
+
+let realMap = null;
+let realMapBox = null;
+
+function ensureRealMapBox() {
+  if (realMapBox) return realMapBox;
+  const css = document.createElement("style");
+  css.textContent =
+    "#dir-real-map{width:100%;height:100%;min-height:280px;border-radius:14px;overflow:hidden;}" +
+    ".map-label{background:rgba(0,0,0,.75);color:#fff;border:0;font:700 18px system-ui,Arial;padding:4px 10px;border-radius:8px;box-shadow:none;}" +
+    ".map-label:before{display:none;}";
+  document.head.appendChild(css);
+  realMapBox = document.createElement("div");
+  realMapBox.id = "dir-real-map";
+  realMapBox.style.display = "none";
+  dirMap.parentNode.insertBefore(realMapBox, dirMap.nextSibling);
+  return realMapBox;
+}
+
+function drawMap(path, startName, placeName) {
+  const box = ensureRealMapBox();
+  if (realMap) { realMap.remove(); realMap = null; }
+  const pts = (path || []).filter((p) => p && p.length === 2);
+  if (pts.length < 2 || typeof L === "undefined") {
+    box.style.display = "none";
+    drawMapSvg(path, startName, placeName);
+    return;
+  }
+  dirMap.setAttribute("hidden", "");
+  box.style.display = "block";
+
+  const map = L.map(box, { zoomControl: false, attributionControl: true });
+  realMap = map;
+  map.setView(pts[0], 17);
+
+  const tiles = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    {
+      maxNativeZoom: 18,
+      maxZoom: 19,
+      attribution: "Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+    }
+  ).addTo(map);
+
+  let loaded = 0, failed = 0;
+  tiles.on("tileload", () => { loaded++; });
+  tiles.on("tileerror", () => {
+    failed++;
+    if (failed >= 4 && loaded === 0 && realMap === map) {
+      map.remove();
+      realMap = null;
+      box.style.display = "none";
+      drawMapSvg(path, startName, placeName);
+    }
+  });
+
+  const line = L.polyline(pts, { color: "#ffeb3b", weight: 7 }).addTo(map);
+  const dot = (p, color, text) =>
+    L.circleMarker(p, { radius: 11, color: "#fff", weight: 3, fillColor: color, fillOpacity: 1 })
+      .addTo(map)
+      .bindTooltip(text, { permanent: true, direction: "top", offset: [0, -10], className: "map-label" });
+  dot(pts[0], "#2ecc71", startName);
+  dot(pts[pts.length - 1], "#ff5252", placeName);
+
+  const fit = () => {
+    if (realMap !== map) return;
+    map.invalidateSize();
+    map.fitBounds(line.getBounds(), { padding: [50, 50], maxZoom: 19 });
+  };
+  setTimeout(fit, 150);
+  setTimeout(fit, 500);
+  setTimeout(fit, 1000);
 }
 
 async function showBuilding(loc) {
