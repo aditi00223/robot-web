@@ -420,7 +420,7 @@ async function pickPlace(loc) {
     return;
   }
 
-  dirMeta.textContent = route.distance_m + " metres, about " + route.time_min + " minutes";
+  dirMeta.textContent = route.distance_m + " metres, about " + route.time_min + (route.time_min === 1 ? " minute" : " minutes");
   drawMap(route.path, "Start", loc.name);
   dirSteps.innerHTML = "";
   route.steps.forEach((s) => {
@@ -577,3 +577,4 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+

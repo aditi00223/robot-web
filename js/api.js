@@ -35,14 +35,14 @@ const API = {
 
   async _get(path) {
     let res;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 6; i++) {
       try {
         res = await fetch(this.BASE_URL + path);
         if (res.ok || res.status < 500) break;
       } catch (e) {
-        if (i === 2) throw e;
+        if (i === 5) throw e;
       }
-      await new Promise((r) => setTimeout(r, 3000));
+      await new Promise((r) => setTimeout(r, 10000));
     }
     if (!res) throw new Error("No response from server");
     if (!res.ok) throw new Error("Request failed: " + res.status);
@@ -102,3 +102,4 @@ if (!API.MOCK) {
   API.getCategories().catch(() => {});
   setInterval(() => API.getCategories().catch(() => {}), 10 * 60 * 1000);
 }
+
