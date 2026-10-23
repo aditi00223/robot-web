@@ -75,6 +75,7 @@ function matchName(text, items) {
 }
 
 function renderTiles(items, onPick) {
+  dirList.classList.toggle("many", items.length > 6);
   dirList.innerHTML = "";
   items.forEach((item) => {
     const b = document.createElement("button");
@@ -95,6 +96,12 @@ function showQR(url) {
   qrUrl.textContent = url;
   cameraBox.hidden = true;
   qrBox.hidden = false;
+}
+
+function spokenList(items) {
+  const names = items.map((i) => i.name);
+  if (names.length <= 5) return names.join(", ");
+  return names.slice(0, 4).join(", ") + ", and more. You can also tap one on the screen";
 }
 
 function speakThenListen(text, after) {
@@ -222,7 +229,7 @@ async function startDirections() {
 
   renderTiles(dirItems, pickCategory);
   dirHint.textContent = "Say a category, or tap one";
-  speakThenListen("Which category? " + dirItems.map((c) => c.name).join(", ") + ".");
+  speakThenListen("Which category? " + spokenList(dirItems) + ".");
 }
 
 async function pickCategory(cat) {
@@ -253,7 +260,7 @@ async function pickCategory(cat) {
   state = "dir_place";
   renderTiles(dirItems, pickPlace);
   dirHint.textContent = "Say a place, or tap one";
-  speakThenListen("Which place? " + dirItems.map((p) => p.name).join(", ") + ".");
+  speakThenListen("Which place? " + spokenList(dirItems) + ".");
 }
 
 function esc(s) {
@@ -452,7 +459,7 @@ function handleListChoice(text, what, onPick, isFinal) {
     speakThenListen("Sorry, I could not understand. Please try again later.", () => backToIdle(false));
   } else {
     dirHint.textContent = "Say a " + what + ", or tap one";
-    speakThenListen("Sorry, I did not catch that. Please say " + dirItems.map((i) => i.name).join(", ") + ".");
+    speakThenListen("Sorry, I did not catch that. Please say " + spokenList(dirItems) + ".");
   }
 }
 
@@ -577,4 +584,5 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
 
