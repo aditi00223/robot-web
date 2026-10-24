@@ -184,3 +184,8 @@ button { font-family: inherit; }
 .tiles.many .tile { flex: 0 0 auto; width: 41vmin; min-height: 9vh; max-height: none; font-size: 4vmin; margin: 1vmin; align-self: auto; }
 .tiles.many .tile + .tile { margin-top: 1vmin; }
 
+
+#screen-directions { padding-bottom: 16vmin; }
+.dir-title { position: sticky; top: 0; z-index: 30; }
+#btn-dir-home { position: fixed; bottom: 2vmin; left: 50%; margin-left: -23vmin; z-index: 40; }
+.caption { bottom: 17vmin; }
