@@ -189,3 +189,9 @@ button { font-family: inherit; }
 .dir-title { position: sticky; top: 0; z-index: 30; }
 #btn-dir-home { position: fixed; bottom: 2vmin; left: 50%; margin-left: -23vmin; z-index: 40; }
 .caption { bottom: 17vmin; }
+
+#btn-slip { width: 60vmin; font-size: 6vmin; padding: 3vmin; background: linear-gradient(#7ee787, #1f9d3a); border-color: #d4f8d9; box-shadow: 0 0 4vmin rgba(34,197,94,0.55); }
+
+.screen > * { flex-shrink: 0 !important; }
+.dir-result, .dir-steps, .dir-steps li, .dir-meta { flex-shrink: 0; }
+#screen-directions { padding-bottom: 26vmin; }
