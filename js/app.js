@@ -129,6 +129,7 @@ function backToIdle(listen = true) {
   dirScreen.hidden = true;
   dirList.innerHTML = "";
   dirResult.hidden = true;
+  document.getElementById("btn-slip").hidden = true;
   dirItems = [];
   dirTries = 0;
   idleScreen.hidden = false;
@@ -214,6 +215,7 @@ async function startDirections() {
   idleScreen.hidden = true;
   dirScreen.hidden = false;
   dirResult.hidden = true;
+  document.getElementById("btn-slip").hidden = true;
   dirList.innerHTML = "";
   dirTitle.textContent = "Pick a category";
   dirHint.textContent = "Loading...";
@@ -406,7 +408,10 @@ async function showBuilding(loc) {
   dirDesc.hidden = true;
 }
 
+let currentLoc = null;
+
 async function pickPlace(loc) {
+  currentLoc = loc;
   if (state !== "dir_place") return;
   state = "dir_route";
   busy = true;
@@ -437,6 +442,7 @@ async function pickPlace(loc) {
     dirSteps.appendChild(li);
   });
   dirResult.hidden = false;
+  document.getElementById("btn-slip").hidden = false;
   dirHint.textContent = "Tap Home when you are done";
 
   const spoken = "Directions to " + loc.name + ". " +
@@ -514,6 +520,9 @@ setInterval(() => {
   }
 }, 1000);
 
+document.getElementById("btn-slip").addEventListener("click", () => {
+  if (currentLoc) window.open(API.BASE_URL + "/slip/" + currentLoc.id, "_blank");
+});
 document.getElementById("eyes").addEventListener("click", wake);
 document.getElementById("btn-photo").addEventListener("click", () => choose("photo"));
 document.getElementById("btn-directions").addEventListener("click", () => choose("directions"));
@@ -590,6 +599,7 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
 
 
 
