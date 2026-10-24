@@ -448,6 +448,11 @@ async function pickPlace(loc) {
 function handleListChoice(text, what, onPick, isFinal) {
   dirHint.textContent = 'Heard: "' + text + '"';
   const found = matchName(text, dirItems);
+  (window.__heardLog = window.__heardLog || []).push({ heard: text, matched: found ? found.name : "NOT MATCHED" });
+  if (new URLSearchParams(location.search).get("voicetest") === "1") {
+    dirHint.textContent = "Heard: " + text + "  =>  " + (found ? found.name : "NOT MATCHED");
+    return;
+  }
   if (found) {
     onPick(found);
     return;
@@ -584,5 +589,6 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
 
 
