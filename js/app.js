@@ -3,6 +3,7 @@ const PHOTO = /\b(1|one|won|wan|ek|photo|photos|foto)\b/;
 const DIRECTIONS = /\b(2|two|to|too|tu|do|direction|directions)\b/;
 const IDLE_HINT = 'Say "Hello Robo" to wake me';
 const QR_SECONDS = 30;
+const SHOW_HEARD = /[?&](debug|voicetest)=1/.test(location.search);
 const SHORT_ANSWER = /^(1|one|won|wan|ek|2|two|to|too|tu|do|photo|photos|direction|directions)$/;
 const ROUTE_SECONDS = 30;
 const MAX_TRIES = 2;
@@ -54,7 +55,7 @@ function waitForDone(ms) {
 }
 
 function matchName(text, items) {
-  const t = text.toLowerCase().replace(/[^a-z0-9 ]/g, " ");
+  const t = text.toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\b(one|won)\b/g, "1").replace(/\btwo\b/g, "2").replace(/\bthree\b/g, "3").replace(/\bfour\b/g, "4").replace(/\bfive\b/g, "5").replace(/\bsix\b/g, "6").replace(/\bseven\b/g, "7");
   const heard = t.split(/\s+/).filter(Boolean);
   for (const item of items) {
     if (t.includes(item.name.toLowerCase())) return item;
@@ -446,7 +447,7 @@ async function pickPlace(loc) {
 }
 
 function handleListChoice(text, what, onPick, isFinal) {
-  dirHint.textContent = 'Heard: "' + text + '"';
+  if (SHOW_HEARD) dirHint.textContent = 'Heard: "' + text + '"';
   const found = matchName(text, dirItems);
   (window.__heardLog = window.__heardLog || []).push({ heard: text, matched: found ? found.name : "NOT MATCHED" });
   if (new URLSearchParams(location.search).get("voicetest") === "1") {
@@ -485,7 +486,7 @@ function choose(what) {
 function onHeard(text, isFinal = true) {
   if (!text) return;
   if (busy) return;
-  hint.textContent = 'Heard: "' + text + '"';
+  if (SHOW_HEARD) hint.textContent = 'Heard: "' + text + '"';
   if (!isFinal && state !== "idle" && !(state === "menu" && SHORT_ANSWER.test(text))) return;
   if (state === "idle") {
     if (WAKE.test(text)) wake();
@@ -589,6 +590,7 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
 
 
 
