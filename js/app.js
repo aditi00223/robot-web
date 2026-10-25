@@ -402,7 +402,9 @@ async function showBuilding(loc) {
   dirDesc.textContent = desc;
   dirDesc.hidden = !desc;
   dirHint.textContent = "Showing you the way to " + loc.name;
+  Speak.quiet = true;
   await speakAsync("Showing you the way to " + loc.name + ".");
+  Speak.quiet = false;
   await wait(3000);
   dirPhoto.hidden = true;
   dirDesc.hidden = true;
@@ -599,6 +601,7 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
 
 
 

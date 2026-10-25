@@ -195,3 +195,21 @@ button { font-family: inherit; }
 .screen > * { flex-shrink: 0 !important; }
 .dir-result, .dir-steps, .dir-steps li, .dir-meta { flex-shrink: 0; }
 #screen-directions { padding-bottom: 26vmin; }
+
+.leaflet-container { z-index: 0; }
+.dir-result { position: relative; z-index: 0; }
+#screen-directions { padding-bottom: 3vmin; }
+#btn-slip, #btn-dir-home { position: static; margin: 0; left: auto; bottom: auto; }
+.dir-actions {
+  position: sticky; bottom: 0; z-index: 40; width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 3vmin 0 2vmin; background: linear-gradient(rgba(5,9,20,0), #050914 30%);
+}
+.dir-actions .btn + .btn { margin-top: 2vmin; }
+.caption { bottom: 20vmin; }
+
+#screen-directions { padding-top: 10vmin; }
+.dir-title { top: 9vmin; }
+
+#screen-directions { padding-top: 9vmin; }
+.dir-title { position: relative; top: 0; z-index: 1; }

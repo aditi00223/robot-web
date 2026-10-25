@@ -1,6 +1,7 @@
 const Speak = {
   n: 0,
   caption(text) {
+    if (Speak.quiet) text = "";
     const el = document.getElementById("caption");
     if (!el) return;
     if (/^\d+$/.test(text) || text.length > 70) text = "";
@@ -24,5 +25,6 @@ const Speak = {
     window.speechSynthesis.cancel();
   }
 };
+
 
 
