@@ -233,3 +233,7 @@ button { font-family: inherit; }
 .many-screen .tiles.many .tile + .tile { margin-top: 0.8vmin; }
 
 .tiles.many.medium .tile { min-height: 13vh; font-size: 5vmin; padding: 2vmin 2.4vmin; margin: 1.2vmin; }
+
+.leaflet-container { height: 34vh !important; max-height: 34vh !important; }
+
+.leaflet-container { height: 34vh !important; max-height: 34vh !important; }
