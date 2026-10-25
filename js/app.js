@@ -77,6 +77,9 @@ function matchName(text, items) {
 
 function renderTiles(items, onPick) {
   dirList.classList.toggle("many", items.length > 6);
+  dirScreen.classList.toggle("many-screen", items.length > 10);
+  dirList.classList.toggle("medium", items.length > 6 && items.length <= 10);
+  dirList.classList.toggle("medium", items.length > 6 && items.length <= 10);
   dirList.innerHTML = "";
   items.forEach((item) => {
     const b = document.createElement("button");
@@ -601,6 +604,9 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
+
+
 
 
 
