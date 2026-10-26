@@ -1,7 +1,7 @@
 const Speak = {
   n: 0,
   caption(text) {
-    if (Speak.quiet) text = "";
+    if (Speak.quiet || document.querySelector("#screen-directions:not([hidden])")) text = "";
     const el = document.getElementById("caption");
     if (!el) return;
     if (/^\d+$/.test(text) || text.length > 70) text = "";
@@ -25,6 +25,7 @@ const Speak = {
     window.speechSynthesis.cancel();
   }
 };
+
 
 
 
