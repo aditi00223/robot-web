@@ -237,3 +237,8 @@ button { font-family: inherit; }
 .leaflet-container { height: 34vh !important; max-height: 34vh !important; }
 
 .leaflet-container { height: 34vh !important; max-height: 34vh !important; }
+
+@media (orientation: landscape) {
+  .menu { align-items: stretch; }
+  .menu .btn { width: auto; min-width: 40vmin; padding: 4vmin 6vmin; font-size: 5.6vmin; white-space: nowrap; display: flex; align-items: center; justify-content: center; }
+}

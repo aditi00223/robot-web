@@ -40,6 +40,7 @@ const Voice = {
       }
     };
     rec.onerror = (e) => {
+      if (e.error === "aborted") this.delay = 1500;
       if (e.error === "network") {
         this.delay = 2000;
         this.status("no internet for voice, retrying...");
@@ -65,6 +66,7 @@ const Voice = {
     this.status("off");
   }
 };
+
 
 
 
