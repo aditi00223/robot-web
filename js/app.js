@@ -1,7 +1,7 @@
-const WAKE = /(hello|hallo|helo)\s*(robo|robot|rowbo|roboto)/;
+const WAKE = /\b(hello|hallo|helo|hullo|hey|hi)[\s,.!?-]*(yuvan|yuvaan|yuwan|yuvin|yuvon|yovan|youvan|you van|u van|uvan|yoovan|yuan)\b/;
 const PHOTO = /\b(1|one|won|wan|ek|photo|photos|foto)\b/;
 const DIRECTIONS = /\b(2|two|to|too|tu|do|direction|directions)\b/;
-const IDLE_HINT = 'Say "Hello Robo" to wake me';
+const IDLE_HINT = 'Say "Hello Yuvan" to wake me';
 const QR_SECONDS = 30;
 const SHOW_HEARD = /[?&](debug|voicetest)=1/.test(location.search);
 const SHORT_ANSWER = /^(1|one|won|wan|ek|2|two|to|too|tu|do|photo|photos|direction|directions)$/;
@@ -485,7 +485,7 @@ function wake() {
   state = "menu";
   menu.hidden = false;
   hint.textContent = "Say 1 for Photo, say 2 for Directions";
-  speakThenListen("Hello! Say one for Photo, or two for Directions.");
+  speakThenListen("Hello! I am Yuvan. Say one for Photo, or two for Directions.");
 }
 
 function choose(what) {
@@ -575,7 +575,7 @@ document.addEventListener("click", () => {
   if (started) return;
   started = true;
   if (!busy) {
-    hint.textContent = 'Listening... say "Hello Robo", or tap my eyes';
+    hint.textContent = 'Listening... say "Hello Yuvan", or tap my eyes';
     Voice.start(onHeard);
   }
 });
@@ -636,6 +636,8 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
+
 
 
 
