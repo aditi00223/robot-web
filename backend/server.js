@@ -460,14 +460,14 @@ app.get("/slip/:locationId", async (req, res) => {
   @page { size: 58mm auto; margin: 0; }
   html, body { margin: 0; padding: 0; background: #fff; color: #000; }
   body { width: ${width}mm; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.3; }
-  h1 { font-size: 20px; font-weight: bold; text-align: center; margin: 4px 0 2px; }
-  .from, .info { text-align: center; margin: 2px 0; font-size: 13px; }
-  ol { margin: 8px 0; padding-left: 20px; font-size: 14px; }
+  h1 { font-size: 24px; font-weight: bold; text-align: center; margin: 4px 0 2px; }
+  .from, .info { text-align: center; margin: 2px 0; font-size: 15px; font-weight: bold; }
+  ol { margin: 8px 0; padding-left: 20px; font-size: 16px; font-weight: bold; }
   li { margin-bottom: 4px; }
   .note { text-align: center; margin: 8px 0; }
-  .qr { display: block; width: 30mm; height: 30mm; margin: 8px auto 2px; }
-  .scan, .thanks { text-align: center; margin: 2px 0; font-size: 12px; }
-  .thanks { font-weight: bold; font-size: 14px; margin: 6px 0 12px; }
+  .qr { display: block; width: 44mm; height: 44mm; margin: 10px auto 4px; }
+  .scan, .thanks { text-align: center; margin: 2px 0; font-size: 14px; font-weight: bold; }
+  .thanks { font-weight: bold; font-size: 16px; margin: 6px 0 12px; }
 </style>
 </head>
 <body>
@@ -488,3 +488,4 @@ ${stepsHtml}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
+
