@@ -5,7 +5,7 @@ const IDLE_HINT = 'Say "Hello Robo" to wake me';
 const QR_SECONDS = 30;
 const SHOW_HEARD = /[?&](debug|voicetest)=1/.test(location.search);
 const SHORT_ANSWER = /^(1|one|won|wan|ek|2|two|to|too|tu|do|photo|photos|direction|directions)$/;
-const ROUTE_SECONDS = 30;
+const ROUTE_SECONDS = 60;
 const MAX_TRIES = 2;
 
 const hint = document.querySelector(".hint");
@@ -448,11 +448,11 @@ async function pickPlace(loc) {
   });
   dirResult.hidden = false;
   document.getElementById("btn-slip").hidden = false;
-  dirHint.textContent = "Tap Home when you are done";
+  dirHint.textContent = "Say \"print\" for a slip, or say \"home\" to finish";
 
   const spoken = "Directions to " + loc.name + ". " +
     route.steps.map((s) => s.replace(/\.?\s*$/, ".")).join(" ");
-  speakAsync(spoken);
+  speakThenListen(spoken + " Would you like a printed slip? Say yes to print, or say home to finish.");
   await waitForDone(ROUTE_SECONDS * 1000);
   backToIdle();
 }
@@ -494,6 +494,36 @@ function choose(what) {
   else startDirections();
 }
 
+const PRINT_WORDS = /\b(yes|yeah|yep|print|printed|slip|haan|please)\b/;
+const HOME_WORDS = /\b(no|nope|home|done|finish|finished|stop|nahi|cancel)\b/;
+
+function showSlipPreview(id) {
+  let box = document.getElementById("slip-preview");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "slip-preview";
+    box.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;";
+    box.innerHTML = '<iframe id="slip-frame" style="width:72vmin;height:92vh;border:0;border-radius:3vmin;background:#fff"></iframe>';
+    document.body.appendChild(box);
+  }
+  document.getElementById("slip-frame").src = API.BASE_URL + "/slip/" + id;
+  box.style.display = "flex";
+  setTimeout(() => { box.style.display = "none"; }, 9000);
+}
+
+function printSlip() {
+  if (!currentLoc) return;
+  showSlipPreview(currentLoc.id);
+  speakThenListen("Printing your slip. Please collect it.");
+}
+
+function handleRouteVoice(text) {
+  const wantsPrint = PRINT_WORDS.test(text);
+  const wantsHome = HOME_WORDS.test(text);
+  if (wantsPrint && !wantsHome) printSlip();
+  else if (wantsHome && !wantsPrint) { if (doneResolve) doneResolve(); else backToIdle(); }
+}
+
 function onHeard(text, isFinal = true) {
   if (!text) return;
   if (busy) return;
@@ -509,6 +539,8 @@ function onHeard(text, isFinal = true) {
     else if (wantsDirections) choose("directions");
   } else if (state === "dir_cat") {
     handleListChoice(text, "category", pickCategory, isFinal);
+  } else if (state === "dir_route") {
+    handleRouteVoice(text);
   } else if (state === "dir_place") {
     handleListChoice(text, "place", pickPlace, isFinal);
   }
@@ -526,7 +558,7 @@ setInterval(() => {
 }, 1000);
 
 document.getElementById("btn-slip").addEventListener("click", () => {
-  if (currentLoc) window.open(API.BASE_URL + "/slip/" + currentLoc.id, "_blank");
+  if (currentLoc) printSlip();
 });
 document.getElementById("eyes").addEventListener("click", wake);
 document.getElementById("btn-photo").addEventListener("click", () => choose("photo"));
@@ -604,6 +636,7 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
+
 
 
 

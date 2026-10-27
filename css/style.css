@@ -318,3 +318,5 @@ body { background: #6e1014; background: radial-gradient(circle at 50% 22%, #c42a
 
 .dir-steps li { font-weight: 800; font-size: 5vmin; }
 .dir-meta { font-weight: 800; font-size: 4.8vmin; }
+
+#dir-result:not([hidden]) ~ #dir-hint { display: block; font-size: 3.8vmin; font-weight: 700; color: #ffe9b0; margin-top: 1.4vmin; }
