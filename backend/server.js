@@ -459,7 +459,7 @@ app.get("/slip/:locationId", async (req, res) => {
 <style>
   @page { size: 58mm auto; margin: 0; }
   html, body { margin: 0; padding: 0; background: #fff; color: #000; }
-        body { width: ${width}mm; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.3; }
+  body { width: ${width}mm; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.3; }
   h1 { font-size: 24px; font-weight: bold; text-align: center; margin: 4px 0 2px; }
   .from, .info { text-align: center; margin: 2px 0; font-size: 15px; font-weight: bold; }
   ol { margin: 8px 0; padding-left: 20px; font-size: 16px; font-weight: bold; }
@@ -468,6 +468,7 @@ app.get("/slip/:locationId", async (req, res) => {
   .qr { display: block; width: 44mm; height: 44mm; margin: 10px auto 4px; }
   .scan, .thanks { text-align: center; margin: 2px 0; font-size: 14px; font-weight: bold; }
   .thanks { font-weight: bold; font-size: 16px; margin: 6px 0 12px; }
+  @media print { body { zoom: 1 !important; } }
 </style>
 </head>
 <body>
@@ -478,6 +479,18 @@ ${stepsHtml}
 <img class="qr" src="${qr}" alt="QR code">
 <p class="scan">Scan for photos and map</p>
 <p class="thanks">Thank you!</p>
+<script>
+function fitSlip() {
+  if (window.self === window.top) return;
+  var b = document.body;
+  b.style.zoom = 1;
+  var w = b.offsetWidth, h = b.scrollHeight;
+  var s = Math.min((window.innerWidth * 0.92) / w, (window.innerHeight * 0.96) / h, 3);
+  b.style.zoom = s > 1 ? s : 1;
+}
+window.addEventListener('load', fitSlip);
+window.addEventListener('resize', fitSlip);
+</script>
 </body>
 </html>`);
   } catch (err) {
@@ -488,4 +501,3 @@ ${stepsHtml}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
-
