@@ -1,4 +1,4 @@
-const WAKE = /\b(hello|hallo|helo|hullo|hey|hi)[\s,.!?-]*(yuvan|yuvaan|yuwan|yuvin|yuvon|yovan|youvan|you van|u van|uvan|yoovan|yuan)\b/;
+const WAKE = /(hello|hallo|helo)\s*(robo|robot|rowbo|roboto)/;
 const PHOTO = /\b(1|one|won|wan|ek|photo|photos|foto)\b/;
 const DIRECTIONS = /\b(2|two|to|too|tu|do|direction|directions)\b/;
 const IDLE_HINT = 'Say "Hello Yuvan" to wake me';
@@ -34,7 +34,7 @@ const dirMap = document.getElementById("dir-map");
 
 let state = "idle";
 let busy = false;
-let started = false;
+let voiceOn = false;
 let speakId = 0;
 let doneResolve = null;
 let dirItems = [];
@@ -78,7 +78,6 @@ function matchName(text, items) {
 function renderTiles(items, onPick) {
   dirList.classList.toggle("many", items.length > 6);
   dirScreen.classList.toggle("many-screen", items.length > 10);
-  dirList.classList.toggle("medium", items.length > 6 && items.length <= 10);
   dirList.classList.toggle("medium", items.length > 6 && items.length <= 10);
   dirList.innerHTML = "";
   items.forEach((item) => {
@@ -575,7 +574,7 @@ document.addEventListener("click", () => {
   if (started) return;
   started = true;
   if (!busy) {
-    hint.textContent = 'Listening... say "Hello Yuvan", or tap my eyes';
+    hint.textContent = 'Listening... say "Hello Robo", or tap my eyes';
     Voice.start(onHeard);
   }
 });
@@ -590,6 +589,7 @@ document.addEventListener("click", () => {
 
 
 window.onVoiceStatus = (msg) => {
+  voiceOn = (msg === "listening" || msg.startsWith("heard") || msg.startsWith("hearing"));
   const bar = document.getElementById("status-bar");
   const dot = document.getElementById("status-dot");
   const txt = document.getElementById("status-text");
@@ -636,8 +636,6 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
-
-
 
 
 
