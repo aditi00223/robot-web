@@ -315,3 +315,6 @@ body { background: #6e1014; background: radial-gradient(circle at 50% 22%, #c42a
 .dir-photo { box-shadow: 0 0 5vmin rgba(255,255,255,0.35); }
 .status-bar { background: rgba(59,10,13,0.9); }
 .caption { background: rgba(40,6,8,0.88); }
+
+.dir-steps li { font-weight: 800; font-size: 5vmin; }
+.dir-meta { font-weight: 800; font-size: 4.8vmin; }
