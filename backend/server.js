@@ -459,7 +459,7 @@ app.get("/slip/:locationId", async (req, res) => {
 <style>
   @page { size: 58mm auto; margin: 0; }
   html, body { margin: 0; padding: 0; background: #fff; color: #000; }
-  body { width: ${width}mm; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.3; }
+        body { width: ${width}mm; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.3; }
   h1 { font-size: 24px; font-weight: bold; text-align: center; margin: 4px 0 2px; }
   .from, .info { text-align: center; margin: 2px 0; font-size: 15px; font-weight: bold; }
   ol { margin: 8px 0; padding-left: 20px; font-size: 16px; font-weight: bold; }
