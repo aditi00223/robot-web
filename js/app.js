@@ -513,7 +513,7 @@ function showSlipPreview(id) {
 function printSlip() {
   if (!currentLoc) return;
   showSlipPreview(currentLoc.id);
-  speakThenListen("Printing your slip. Please collect it.");
+  speakThenListen("Printing your slip. Save paper, save trees. Scan the QR code on the slip to get the way on your phone.");
 }
 
 function handleRouteVoice(text) {
