@@ -1,4 +1,4 @@
-const WAKE = /(hello|hallo|helo)\s*(robo|robot|rowbo|roboto)/;
+const WAKE = /(hello|hallo|helo|hey|hi)\s*(yuvan|yuvaan|yuwan|yuvon|you van|u van|robo|robot|rowbo|roboto)/i;
 const PHOTO = /\b(1|one|won|wan|ek|photo|photos|foto)\b/;
 const DIRECTIONS = /\b(2|two|to|too|tu|do|direction|directions)\b/;
 const IDLE_HINT = 'Say "Hello Yuvan" to wake me';
@@ -484,7 +484,7 @@ function wake() {
   state = "menu";
   menu.hidden = false;
   hint.textContent = "Say 1 for Photo, say 2 for Directions";
-  speakThenListen("Hello! I am Yuvan. Say one for Photo, or two for Directions.");
+  speakThenListen("Hello! Say one for Photo, or two for Directions.");
 }
 
 function choose(what) {
@@ -570,23 +570,45 @@ document.getElementById("btn-dir-home").addEventListener("click", () => {
   else backToIdle();
 });
 
-document.addEventListener("click", () => {
-  if (started) return;
-  started = true;
-  if (!busy) {
-    hint.textContent = 'Listening... say "Hello Robo", or tap my eyes';
+// ---- Tap-free listening ----
+const GREETING = "Say, Hello Yuvan, to wake me up.";
+let greetId = 0;
+let tappedOnce = false;
+
+// Speak the greeting, then start listening. If speech is blocked by the
+// browser, the timeout still starts the microphone.
+function greetAndListen() {
+  const id = ++greetId;
+  busy = true;
+  let done = false;
+  Voice.stop();
+  const go = () => {
+    if (done || id !== greetId) return;
+    done = true;
+    busy = false;
+    hint.textContent = 'Listening... say "Hello Yuvan", or tap my eyes';
     Voice.start(onHeard);
-  }
+  };
+  Speak.say(GREETING, () => setTimeout(go, 400));
+  setTimeout(go, 5000);
+}
+
+// Try as soon as the page loads (works when Chrome allows sound and mic)
+window.addEventListener("load", () => setTimeout(() => {
+  if (state === "idle" && !voiceOn) greetAndListen();
+}, 800));
+
+// Fallback: the first tap counts as permission to speak and listen
+document.addEventListener("click", () => {
+  if (tappedOnce) return;
+  tappedOnce = true;
+  if (state === "idle" && !voiceOn) greetAndListen();
 });
 
-
-
-
-
-
-
-
-
+// Watchdog: if listening drops while the robot is idle, start it again
+setInterval(() => {
+  if (state === "idle" && !busy && !voiceOn) Voice.start(onHeard);
+}, 5000);
 
 window.onVoiceStatus = (msg) => {
   voiceOn = (msg === "listening" || msg.startsWith("heard") || msg.startsWith("hearing"));
@@ -636,13 +658,3 @@ window.onVoiceStatus = (msg) => {
   wander();
   setTimeout(blink, 2000);
 })();
-
-
-
-
-
-
-
-
-
-
