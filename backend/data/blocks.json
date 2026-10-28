@@ -1,9 +1,9 @@
 {
   "start_point": {
-    "name": "Main Gate",
-    "latitude": 30.68091,
-    "longitude": 76.60577
-  },
+  "name": "Robot",
+  "latitude": 30.682404,
+  "longitude": 76.606521
+},
   "blocks": [
     {
       "name": "Nescafe",

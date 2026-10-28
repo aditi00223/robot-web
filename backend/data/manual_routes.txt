@@ -1,33 +1,28 @@
 # Format:  Place | via (optional) | steps separated by semicolons
-# via = places the walker passes, in order, separated by commas (names exactly as in blocks.json). Leave empty if none.
-# Keep every step short (about 30 letters is best). Do not use the | character inside a step.
+# Written automatically by auto_steps.js. You can edit any line by hand.
 
-Nescafe | | Walk east for about 170 metres; Nescafe is ahead
-Chuttar Puttar | | Walk east for about 170 metres; Chuttar Puttar is ahead
-Buddy Bistro | | Walk east for about 190 metres; Buddy Bistro is ahead
-Dominoz | | Walk east for about 210 metres; Dominoz is ahead
-Herbal Garden | | Walk north-east for about 260 metres; Herbal Garden is ahead
-Mid Gate of Block 3 and 4 | | Walk east for about 210 metres; Mid Gate of Block 3 and 4 is ahead
-Gate 1 | | Walk north-east for about 300 metres; Gate 1 is ahead
-NCC Boat | | Walk north-east for about 250 metres; NCC Boat is ahead
-Block 4 Main Gate | | Walk north-east for about 220 metres; Block 4 Main Gate is ahead
-Block 3 Main Gate | Easy Day | Go straight from Main Gate; Take the left curve; Easy Day is on your right; Go straight, then turn right; Go straight, then turn left; Go straight, then turn right; Block 3 Main Gate is ahead
-Block 5 Girls Entry | | Walk north-east for about 140 metres; Block 5 Girls Entry is ahead
-Block 5 Main Gate | | Walk north-east for about 180 metres; Block 5 Main Gate is ahead
-Block 6 Gate (Front of Block 5) | | Walk north-east for about 170 metres; Block 6 Gate (Front of Block 5) is ahead
-Block 1 Main Gate Admission Cell | | Walk south-west for about 90 metres; Block 1 Main Gate Admission Cell is ahead
-Applebees Main Shop | | Walk north-west for about 120 metres; Applebees Main Shop is ahead
-Block 7 Gate 1 | | Walk north-west for about 130 metres; Block 7 Gate 1 is ahead
-Capgemini Main Gate Block 7 | | Walk west for about 160 metres; Capgemini Main Gate Block 7 is ahead
-Block 7 Third Gate | | Walk north-west for about 270 metres; Block 7 Third Gate is ahead
-Chanakya Hostel | | Walk north-west for about 110 metres; Chanakya Hostel is ahead
-Einstein Hostel | | Walk west for about 80 metres; Einstein Hostel is ahead
-Milkha Singh Arena Gym | | Walk west for about 170 metres; Milkha Singh Arena Gym is ahead
-Tagore Hall | | Walk south-west for about 140 metres; Tagore Hall is ahead
-Block 2 Hostel Gate | | Walk east for about 220 metres; Block 2 Hostel Gate is ahead
-Ivory Hostel | | Walk east for about 160 metres; Ivory Hostel is ahead
-Rock and Roll | | Walk east for about 140 metres; Rock and Roll is ahead
-Dockyard | | Walk south-east for about 220 metres; Dockyard is ahead
-Kulhad | | Walk east for about 200 metres; Kulhad is ahead
-Yumexpert | | Walk north-east for about 130 metres; Yumexpert is ahead
-Xburger | | Walk east for about 160 metres; Xburger is ahead
+Nescafe | Block 5 Main Gate, Block 5 Girls Entry | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 50 metres to Block 5 Girls Entry; Walk south-east for 120 metres; Nescafe is ahead
+Chuttar Puttar | Block 5 Main Gate, Block 5 Girls Entry | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 50 metres to Block 5 Girls Entry; Walk south-east for 120 metres; Chuttar Puttar is ahead
+Buddy Bistro | Block 5 Main Gate, Block 5 Girls Entry | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 50 metres to Block 5 Girls Entry; Walk south-east for 130 metres; Buddy Bistro is ahead
+Dominoz | Block 5 Main Gate, Yumexpert | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 60 metres to Yumexpert; Walk south-east for 140 metres; Dominoz is ahead
+Herbal Garden | Block 5 Main Gate, NCC Boat | Walk south-east for 30 metres towards Block 5 Main Gate; Continue north-east for 70 metres to NCC Boat; Walk south-east for 90 metres; Herbal Garden is ahead
+Mid Gate of Block 3 and 4 | Block 5 Main Gate, Block 4 Main Gate | Walk south-east for 30 metres towards Block 5 Main Gate; Continue east for 90 metres to Block 4 Main Gate; Walk south for 40 metres; Mid Gate of Block 3 and 4 is ahead
+Gate 1 | Block 5 Main Gate, NCC Boat | Walk south-east for 30 metres towards Block 5 Main Gate; Continue north-east for 70 metres to NCC Boat; Walk east for 60 metres; Gate 1 is ahead
+NCC Boat | Block 5 Main Gate | Walk south-east for 30 metres towards Block 5 Main Gate; Walk north-east for 70 metres; NCC Boat is ahead
+Block 4 Main Gate | Block 5 Main Gate | Walk south-east for 30 metres towards Block 5 Main Gate; Walk east for 90 metres; Block 4 Main Gate is ahead
+Block 3 Main Gate | Block 5 Main Gate, Block 5 Girls Entry | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 50 metres to Block 5 Girls Entry; Walk south-east for 110 metres; Block 3 Main Gate is ahead
+Block 5 Girls Entry |  | Walk south-east for 70 metres; Block 5 Girls Entry is ahead
+Block 5 Main Gate |  | Walk south-east for 30 metres; Block 5 Main Gate is ahead
+Block 6 Gate (Front of Block 5) |  | Walk south-east for 30 metres; Block 6 Gate (Front of Block 5) is ahead
+Innovation Lab Block 1 | Block 5 Girls Entry, Rock and Roll | Walk south-east for 70 metres towards Block 5 Girls Entry; Continue south-east for 100 metres to Rock and Roll; Walk south-west for 40 metres; Innovation Lab Block 1 is ahead
+Block 1 Main Gate Admission Cell | Block 1 Library Gate, Mandir | Walk south-west for 120 metres towards Block 1 Library Gate; Continue south for 140 metres to Mandir; Walk west for 60 metres; Block 1 Main Gate Admission Cell is ahead
+Capgemini Main Gate Block 7 | Axis Bank, Applebees Main Shop | Walk west for 90 metres towards Axis Bank; Continue south-west for 90 metres to Applebees Main Shop; Walk west for 70 metres; Capgemini Main Gate Block 7 is ahead
+Milkha Singh Arena Gym | Axis Bank, Applebees Main Shop | Walk west for 90 metres towards Axis Bank; Continue south-west for 90 metres to Applebees Main Shop; Walk south-west for 120 metres; Milkha Singh Arena Gym is ahead
+Tagore Hall | Block 1 Library Gate, Workshop 1 | Walk south-west for 120 metres towards Block 1 Library Gate; Continue south for 140 metres to Workshop 1; Walk south-west for 110 metres; Tagore Hall is ahead
+Block 2 Hostel Gate | Block 5 Girls Entry, Rock and Roll | Walk south-east for 70 metres towards Block 5 Girls Entry; Continue south-east for 100 metres to Rock and Roll; Walk south-east for 90 metres; Block 2 Hostel Gate is ahead
+Ivory Hostel | Block 5 Main Gate, Block 5 Girls Entry | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 50 metres to Block 5 Girls Entry; Walk south-east for 100 metres; Ivory Hostel is ahead
+Rock and Roll | Block 5 Main Gate, Block 5 Girls Entry | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 50 metres to Block 5 Girls Entry; Walk south-east for 100 metres; Rock and Roll is ahead
+Dockyard | Block 5 Girls Entry, Ivory Hostel | Walk south-east for 70 metres towards Block 5 Girls Entry; Continue south-east for 100 metres to Ivory Hostel; Walk south for 140 metres; Dockyard is ahead
+Kulhad | Block 5 Main Gate, Yumexpert | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 60 metres to Yumexpert; Walk south-east for 140 metres; Kulhad is ahead
+Yumexpert |  | Walk south for 80 metres; Yumexpert is ahead
+Xburger | Block 5 Main Gate, Block 5 Girls Entry | Walk south-east for 30 metres towards Block 5 Main Gate; Continue south for 50 metres to Block 5 Girls Entry; Walk south-east for 120 metres; Xburger is ahead

@@ -3,16 +3,26 @@
   "routes": [
     {
       "location": "Nescafe",
-      "distance_m": 170,
+      "distance_m": 220,
       "time_min": 3,
       "steps": [
-        "Walk east for about 170 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 50 metres to Block 5 Girls Entry",
+        "Walk south-east for 120 metres",
         "Nescafe is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.68183,
+          76.606812
         ],
         [
           30.68098,
@@ -22,16 +32,26 @@
     },
     {
       "location": "Chuttar Puttar",
-      "distance_m": 170,
+      "distance_m": 220,
       "time_min": 3,
       "steps": [
-        "Walk east for about 170 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 50 metres to Block 5 Girls Entry",
+        "Walk south-east for 120 metres",
         "Chuttar Puttar is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.68183,
+          76.606812
         ],
         [
           30.68097,
@@ -41,16 +61,26 @@
     },
     {
       "location": "Buddy Bistro",
-      "distance_m": 190,
+      "distance_m": 240,
       "time_min": 3,
       "steps": [
-        "Walk east for about 190 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 50 metres to Block 5 Girls Entry",
+        "Walk south-east for 130 metres",
         "Buddy Bistro is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.68183,
+          76.606812
         ],
         [
           30.680994,
@@ -60,16 +90,26 @@
     },
     {
       "location": "Dominoz",
-      "distance_m": 210,
-      "time_min": 3,
+      "distance_m": 260,
+      "time_min": 4,
       "steps": [
-        "Walk east for about 210 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 60 metres to Yumexpert",
+        "Walk south-east for 140 metres",
         "Dominoz is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.681729,
+          76.606809
         ],
         [
           30.680964,
@@ -79,16 +119,26 @@
     },
     {
       "location": "Herbal Garden",
-      "distance_m": 260,
-      "time_min": 4,
+      "distance_m": 220,
+      "time_min": 3,
       "steps": [
-        "Walk north-east for about 260 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue north-east for 70 metres to NCC Boat",
+        "Walk south-east for 90 metres",
         "Herbal Garden is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.682574,
+          76.607465
         ],
         [
           30.682027,
@@ -98,16 +148,26 @@
     },
     {
       "location": "Mid Gate of Block 3 and 4",
-      "distance_m": 210,
+      "distance_m": 190,
       "time_min": 3,
       "steps": [
-        "Walk east for about 210 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue east for 90 metres to Block 4 Main Gate",
+        "Walk south for 40 metres",
         "Mid Gate of Block 3 and 4 is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.681981,
+          76.607676
         ],
         [
           30.68161,
@@ -117,16 +177,26 @@
     },
     {
       "location": "Gate 1",
-      "distance_m": 300,
-      "time_min": 4,
+      "distance_m": 190,
+      "time_min": 3,
       "steps": [
-        "Walk north-east for about 300 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue north-east for 70 metres to NCC Boat",
+        "Walk east for 60 metres",
         "Gate 1 is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.682574,
+          76.607465
         ],
         [
           30.682708,
@@ -136,16 +206,21 @@
     },
     {
       "location": "NCC Boat",
-      "distance_m": 250,
-      "time_min": 4,
+      "distance_m": 120,
+      "time_min": 2,
       "steps": [
-        "Walk north-east for about 250 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Walk north-east for 70 metres",
         "NCC Boat is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
         ],
         [
           30.682574,
@@ -155,16 +230,21 @@
     },
     {
       "location": "Block 4 Main Gate",
-      "distance_m": 220,
-      "time_min": 3,
+      "distance_m": 140,
+      "time_min": 2,
       "steps": [
-        "Walk north-east for about 220 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Walk east for 90 metres",
         "Block 4 Main Gate is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
         ],
         [
           30.681981,
@@ -174,25 +254,26 @@
     },
     {
       "location": "Block 3 Main Gate",
-      "distance_m": 250,
-      "time_min": 4,
+      "distance_m": 210,
+      "time_min": 3,
       "steps": [
-        "Go straight from Main Gate",
-        "Take the left curve",
-        "Easy Day is on your right",
-        "Go straight, then turn right",
-        "Go straight, then turn left",
-        "Go straight, then turn right",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 50 metres to Block 5 Girls Entry",
+        "Walk south-east for 110 metres",
         "Block 3 Main Gate is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
         ],
         [
-          30.680527,
-          76.606604
+          30.68226,
+          76.606774
+        ],
+        [
+          30.68183,
+          76.606812
         ],
         [
           30.68122,
@@ -202,16 +283,16 @@
     },
     {
       "location": "Block 5 Girls Entry",
-      "distance_m": 140,
-      "time_min": 2,
+      "distance_m": 80,
+      "time_min": 1,
       "steps": [
-        "Walk north-east for about 140 metres",
+        "Walk south-east for 70 metres",
         "Block 5 Girls Entry is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
         ],
         [
           30.68183,
@@ -221,16 +302,16 @@
     },
     {
       "location": "Block 5 Main Gate",
-      "distance_m": 180,
-      "time_min": 3,
+      "distance_m": 30,
+      "time_min": 1,
       "steps": [
-        "Walk north-east for about 180 metres",
+        "Walk south-east for 30 metres",
         "Block 5 Main Gate is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
         ],
         [
           30.68226,
@@ -240,16 +321,16 @@
     },
     {
       "location": "Block 6 Gate (Front of Block 5)",
-      "distance_m": 170,
-      "time_min": 3,
+      "distance_m": 30,
+      "time_min": 1,
       "steps": [
-        "Walk north-east for about 170 metres",
+        "Walk south-east for 30 metres",
         "Block 6 Gate (Front of Block 5) is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
         ],
         [
           30.682195,
@@ -259,37 +340,16 @@
     },
     {
       "location": "Block 6 Main Gate",
-      "distance_m": 160,
-      "time_min": 2,
+      "distance_m": 10,
+      "time_min": 1,
       "steps": [
-        "Walk north for 100 metres",
-        "Turn right and walk 60 metres",
-        "Block 6 Main Gate is on your right"
+        "Walk south for 10 metres",
+        "Block 6 Main Gate is on your left"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
-        ],
-        [
-          30.681129,
-          76.605874
-        ],
-        [
-          30.68126,
-          76.605856
-        ],
-        [
-          30.681817,
-          76.605845
-        ],
-        [
-          30.681874,
-          76.605927
-        ],
-        [
-          30.682203,
-          76.605927
+          30.682426,
+          76.605938
         ],
         [
           30.682344,
@@ -299,16 +359,37 @@
     },
     {
       "location": "Easy Day",
-      "distance_m": 100,
-      "time_min": 2,
+      "distance_m": 270,
+      "time_min": 4,
       "steps": [
-        "Walk south for 100 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 190 metres",
         "Easy Day is on your left"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -334,16 +415,37 @@
     },
     {
       "location": "Block 2 Easy Day Gate",
-      "distance_m": 130,
-      "time_min": 2,
+      "distance_m": 300,
+      "time_min": 4,
       "steps": [
-        "Walk south for 130 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 230 metres",
         "Block 2 Easy Day Gate is on your left"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -369,51 +471,66 @@
     },
     {
       "location": "Innovation Lab Block 1",
-      "distance_m": 130,
-      "time_min": 2,
+      "distance_m": 240,
+      "time_min": 3,
       "steps": [
-        "Walk south for 130 metres",
-        "Innovation Lab Block 1 is on your left"
+        "Walk south-east for 70 metres towards Block 5 Girls Entry",
+        "Continue south-east for 100 metres to Rock and Roll",
+        "Walk south-west for 40 metres",
+        "Innovation Lab Block 1 is ahead"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682404,
+          76.606521
         ],
         [
-          30.680728,
-          76.605982
+          30.68183,
+          76.606812
         ],
         [
-          30.680627,
-          76.606049
+          30.681004,
+          76.607233
         ],
         [
-          30.680461,
-          76.606305
-        ],
-        [
-          30.680427,
-          76.606465
-        ],
-        [
-          30.680419,
-          76.606905
+          30.680734,
+          76.606913
         ]
       ]
     },
     {
       "location": "Workshop 1",
-      "distance_m": 30,
-      "time_min": 1,
+      "distance_m": 200,
+      "time_min": 3,
       "steps": [
-        "Walk south for 30 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 130 metres",
         "Workshop 1 is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -427,16 +544,37 @@
     },
     {
       "location": "Boys Entry Gate Block 1",
-      "distance_m": 80,
-      "time_min": 2,
+      "distance_m": 250,
+      "time_min": 4,
       "steps": [
-        "Walk south for 80 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 180 metres",
         "Boys Entry Gate Block 1 is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -458,16 +596,26 @@
     },
     {
       "location": "Block 1 Main Gate Admission Cell",
-      "distance_m": 90,
-      "time_min": 2,
+      "distance_m": 360,
+      "time_min": 5,
       "steps": [
-        "Walk south-west for about 90 metres",
+        "Walk south-west for 120 metres towards Block 1 Library Gate",
+        "Continue south for 140 metres to Mandir",
+        "Walk west for 60 metres",
         "Block 1 Main Gate Admission Cell is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.681743,
+          76.605588
+        ],
+        [
+          30.680524,
+          76.605683
         ],
         [
           30.680382,
@@ -477,25 +625,25 @@
     },
     {
       "location": "Block 1 Library Gate",
-      "distance_m": 120,
+      "distance_m": 100,
       "time_min": 2,
       "steps": [
-        "Walk north for 100 metres",
-        "Turn left and walk 20 metres",
+        "Walk south for 70 metres",
+        "Turn slightly right and walk 20 metres",
         "Block 1 Library Gate is on your left"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
         ],
         [
-          30.681129,
-          76.605874
+          30.682203,
+          76.605927
         ],
         [
-          30.68126,
-          76.605856
+          30.681874,
+          76.605927
         ],
         [
           30.681817,
@@ -509,24 +657,29 @@
     },
     {
       "location": "Applebees Ground Gate",
-      "distance_m": 50,
-      "time_min": 1,
+      "distance_m": 120,
+      "time_min": 2,
       "steps": [
-        "Walk north for 50 metres",
-        "Applebees Ground Gate is on your left"
+        "Walk south for 70 metres",
+        "Turn left and walk 50 metres",
+        "Applebees Ground Gate is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
         ],
         [
-          30.681129,
-          76.605874
+          30.682203,
+          76.605927
         ],
         [
-          30.68126,
-          76.605856
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
         ],
         [
           30.681352,
@@ -536,43 +689,73 @@
     },
     {
       "location": "Applebees Main Shop",
-      "distance_m": 120,
+      "distance_m": 160,
       "time_min": 2,
       "steps": [
-        "Walk north-west for about 120 metres",
-        "Applebees Main Shop is ahead"
+        "Walk south for 70 metres",
+        "Turn slightly right and walk 90 metres",
+        "Applebees Main Shop is on your right"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682426,
+          76.605938
         ],
         [
-          30.681625,
-          76.604896
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.681805,
+          76.605195
+        ],
+        [
+          30.681777,
+          76.605047
+        ],
+        [
+          30.681723,
+          76.605026
+        ],
+        [
+          30.681642,
+          76.605039
         ]
       ]
     },
     {
       "location": "Rosewood Hostel",
-      "distance_m": 70,
-      "time_min": 1,
+      "distance_m": 100,
+      "time_min": 2,
       "steps": [
-        "Walk north for 70 metres",
-        "Rosewood Hostel is on your left"
+        "Walk south for 70 metres",
+        "Turn left and walk 30 metres",
+        "Rosewood Hostel is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
         ],
         [
-          30.681129,
-          76.605874
+          30.682203,
+          76.605927
         ],
         [
-          30.68126,
-          76.605856
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
         ],
         [
           30.681582,
@@ -582,24 +765,25 @@
     },
     {
       "location": "Axis Bank",
-      "distance_m": 140,
+      "distance_m": 110,
       "time_min": 2,
       "steps": [
-        "Walk north for 140 metres",
+        "Walk south for 70 metres",
+        "Turn right and walk 40 metres",
         "Axis Bank is on your left"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
         ],
         [
-          30.681129,
-          76.605874
+          30.682203,
+          76.605927
         ],
         [
-          30.68126,
-          76.605856
+          30.681874,
+          76.605927
         ],
         [
           30.681817,
@@ -617,35 +801,70 @@
     },
     {
       "location": "Block 7 Gate 1",
-      "distance_m": 130,
-      "time_min": 2,
+      "distance_m": 170,
+      "time_min": 3,
       "steps": [
-        "Walk north-west for about 130 metres",
-        "Block 7 Gate 1 is ahead"
+        "Walk south for 70 metres",
+        "Turn slightly right and walk 100 metres",
+        "Block 7 Gate 1 is on your right"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682426,
+          76.605938
         ],
         [
-          30.681515,
-          76.604581
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.681805,
+          76.605195
+        ],
+        [
+          30.681777,
+          76.605047
+        ],
+        [
+          30.681723,
+          76.605026
+        ],
+        [
+          30.681571,
+          76.60505
         ]
       ]
     },
     {
       "location": "Capgemini Main Gate Block 7",
-      "distance_m": 160,
-      "time_min": 3,
+      "distance_m": 300,
+      "time_min": 4,
       "steps": [
-        "Walk west for about 160 metres",
+        "Walk west for 90 metres towards Axis Bank",
+        "Continue south-west for 90 metres to Applebees Main Shop",
+        "Walk west for 70 metres",
         "Capgemini Main Gate Block 7 is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.682172,
+          76.605582
+        ],
+        [
+          30.681625,
+          76.604896
         ],
         [
           30.681435,
@@ -655,73 +874,162 @@
     },
     {
       "location": "Block 7 Third Gate",
-      "distance_m": 270,
-      "time_min": 4,
+      "distance_m": 350,
+      "time_min": 5,
       "steps": [
-        "Walk north-west for about 270 metres",
+        "Walk north for 60 metres",
+        "Turn left and walk 290 metres",
         "Block 7 Third Gate is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682426,
+          76.605938
         ],
         [
-          30.682004,
-          76.603297
+          30.682997,
+          76.605968
+        ],
+        [
+          30.683003,
+          76.605859
+        ],
+        [
+          30.683016,
+          76.605164
+        ],
+        [
+          30.683011,
+          76.604997
+        ],
+        [
+          30.682989,
+          76.60486
+        ],
+        [
+          30.682925,
+          76.604625
+        ],
+        [
+          30.68286,
+          76.60448
+        ],
+        [
+          30.682205,
+          76.603162
         ]
       ]
     },
     {
       "location": "Chanakya Hostel",
-      "distance_m": 110,
-      "time_min": 2,
+      "distance_m": 200,
+      "time_min": 3,
       "steps": [
-        "Walk north-west for about 110 metres",
-        "Chanakya Hostel is ahead"
+        "Walk south for 70 metres",
+        "Turn slightly right and walk 120 metres",
+        "Chanakya Hostel is on your right"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682426,
+          76.605938
         ],
         [
-          30.681317,
-          76.604723
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.681805,
+          76.605195
+        ],
+        [
+          30.681777,
+          76.605047
+        ],
+        [
+          30.681723,
+          76.605026
+        ],
+        [
+          30.68136,
+          76.605084
         ]
       ]
     },
     {
       "location": "Einstein Hostel",
-      "distance_m": 80,
-      "time_min": 2,
+      "distance_m": 200,
+      "time_min": 3,
       "steps": [
-        "Walk west for about 80 metres",
-        "Einstein Hostel is ahead"
+        "Walk south for 70 metres",
+        "Turn slightly right and walk 130 metres",
+        "Einstein Hostel is on your right"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682426,
+          76.605938
         ],
         [
-          30.681103,
-          76.604921
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.681805,
+          76.605195
+        ],
+        [
+          30.681777,
+          76.605047
+        ],
+        [
+          30.681723,
+          76.605026
+        ],
+        [
+          30.681284,
+          76.605097
         ]
       ]
     },
     {
       "location": "Milkha Singh Arena Gym",
-      "distance_m": 170,
-      "time_min": 3,
+      "distance_m": 350,
+      "time_min": 5,
       "steps": [
-        "Walk west for about 170 metres",
+        "Walk west for 90 metres towards Axis Bank",
+        "Continue south-west for 90 metres to Applebees Main Shop",
+        "Walk south-west for 120 metres",
         "Milkha Singh Arena Gym is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.682172,
+          76.605582
+        ],
+        [
+          30.681625,
+          76.604896
         ],
         [
           30.680889,
@@ -731,16 +1039,37 @@
     },
     {
       "location": "Mandir",
-      "distance_m": 30,
-      "time_min": 1,
+      "distance_m": 200,
+      "time_min": 3,
       "steps": [
-        "Walk south for 30 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 130 metres",
         "Mandir is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -754,16 +1083,26 @@
     },
     {
       "location": "Tagore Hall",
-      "distance_m": 140,
-      "time_min": 2,
+      "distance_m": 420,
+      "time_min": 6,
       "steps": [
-        "Walk south-west for about 140 metres",
+        "Walk south-west for 120 metres towards Block 1 Library Gate",
+        "Continue south for 140 metres to Workshop 1",
+        "Walk south-west for 110 metres",
         "Tagore Hall is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.681743,
+          76.605588
+        ],
+        [
+          30.680514,
+          76.605755
         ],
         [
           30.679879,
@@ -773,16 +1112,37 @@
     },
     {
       "location": "Canteen",
-      "distance_m": 170,
-      "time_min": 3,
+      "distance_m": 340,
+      "time_min": 5,
       "steps": [
-        "Walk south for 170 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 270 metres",
         "Canteen is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -808,16 +1168,26 @@
     },
     {
       "location": "Block 2 Hostel Gate",
-      "distance_m": 220,
-      "time_min": 3,
+      "distance_m": 300,
+      "time_min": 4,
       "steps": [
-        "Walk east for about 220 metres",
+        "Walk south-east for 70 metres towards Block 5 Girls Entry",
+        "Continue south-east for 100 metres to Rock and Roll",
+        "Walk south-east for 90 metres",
         "Block 2 Hostel Gate is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68183,
+          76.606812
+        ],
+        [
+          30.681004,
+          76.607233
         ],
         [
           30.680677,
@@ -827,16 +1197,26 @@
     },
     {
       "location": "Ivory Hostel",
-      "distance_m": 160,
+      "distance_m": 200,
       "time_min": 3,
       "steps": [
-        "Walk east for about 160 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 50 metres to Block 5 Girls Entry",
+        "Walk south-east for 100 metres",
         "Ivory Hostel is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.68183,
+          76.606812
         ],
         [
           30.681146,
@@ -846,16 +1226,26 @@
     },
     {
       "location": "Rock and Roll",
-      "distance_m": 140,
-      "time_min": 2,
+      "distance_m": 200,
+      "time_min": 3,
       "steps": [
-        "Walk east for about 140 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 50 metres to Block 5 Girls Entry",
+        "Walk south-east for 100 metres",
         "Rock and Roll is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.68183,
+          76.606812
         ],
         [
           30.681004,
@@ -865,16 +1255,26 @@
     },
     {
       "location": "Dockyard",
-      "distance_m": 220,
-      "time_min": 3,
+      "distance_m": 350,
+      "time_min": 5,
       "steps": [
-        "Walk south-east for about 220 metres",
+        "Walk south-east for 70 metres towards Block 5 Girls Entry",
+        "Continue south-east for 100 metres to Ivory Hostel",
+        "Walk south for 140 metres",
         "Dockyard is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68183,
+          76.606812
+        ],
+        [
+          30.681146,
+          76.607469
         ],
         [
           30.679923,
@@ -884,16 +1284,37 @@
     },
     {
       "location": "Top and Town",
-      "distance_m": 160,
-      "time_min": 2,
+      "distance_m": 330,
+      "time_min": 4,
       "steps": [
-        "Walk south for 160 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 260 metres",
         "Top and Town is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -919,16 +1340,26 @@
     },
     {
       "location": "Kulhad",
-      "distance_m": 200,
-      "time_min": 3,
+      "distance_m": 260,
+      "time_min": 4,
       "steps": [
-        "Walk east for about 200 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 60 metres to Yumexpert",
+        "Walk south-east for 140 metres",
         "Kulhad is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.681729,
+          76.606809
         ],
         [
           30.68082,
@@ -938,16 +1369,37 @@
     },
     {
       "location": "Tuckshop",
-      "distance_m": 120,
-      "time_min": 2,
+      "distance_m": 290,
+      "time_min": 4,
       "steps": [
-        "Walk south for 120 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 220 metres",
         "Tuckshop is on your left"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -973,16 +1425,37 @@
     },
     {
       "location": "Sip n Bite",
-      "distance_m": 170,
-      "time_min": 3,
+      "distance_m": 340,
+      "time_min": 5,
       "steps": [
-        "Walk south for 170 metres",
+        "Walk south for 70 metres",
+        "Turn left and walk 270 metres",
         "Sip n Bite is on your right"
       ],
       "path": [
         [
-          30.680941,
-          76.605925
+          30.682426,
+          76.605938
+        ],
+        [
+          30.682203,
+          76.605927
+        ],
+        [
+          30.681874,
+          76.605927
+        ],
+        [
+          30.681817,
+          76.605845
+        ],
+        [
+          30.68126,
+          76.605856
+        ],
+        [
+          30.681129,
+          76.605874
         ],
         [
           30.680728,
@@ -1008,16 +1481,16 @@
     },
     {
       "location": "Yumexpert",
-      "distance_m": 130,
+      "distance_m": 90,
       "time_min": 2,
       "steps": [
-        "Walk north-east for about 130 metres",
+        "Walk south for 80 metres",
         "Yumexpert is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
         ],
         [
           30.681729,
@@ -1027,16 +1500,26 @@
     },
     {
       "location": "Xburger",
-      "distance_m": 160,
+      "distance_m": 230,
       "time_min": 3,
       "steps": [
-        "Walk east for about 160 metres",
+        "Walk south-east for 30 metres towards Block 5 Main Gate",
+        "Continue south for 50 metres to Block 5 Girls Entry",
+        "Walk south-east for 120 metres",
         "Xburger is ahead"
       ],
       "path": [
         [
-          30.68091,
-          76.60577
+          30.682404,
+          76.606521
+        ],
+        [
+          30.68226,
+          76.606774
+        ],
+        [
+          30.68183,
+          76.606812
         ],
         [
           30.680926,
